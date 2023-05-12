@@ -1,0 +1,58 @@
+{% extends "admin.html" %}
+
+{%load crispy_forms_tags %} 
+
+{% block 'content'%}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+              
+        <div class="col-lg-6 col-sm-12 p-5">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-12 mb-4">
+                 <div class="card">
+                  <img src="{{detaile.image.url }}" alt="" class="card-img-top">
+                   <div class="card-body">
+                     <h5 class="card-title">{{detaile.name}}</h5>
+                     <p class="card-text"><strong>description</strong><br>{{detaile.description}}</p>
+                     <p class="card-text">{%if detaile.is_available%} Available {%else%} Non-available{%endif%}</p>
+                     <p class="card-text">{{detaile.catagory}}</p>
+                     
+                     <!-- <a href="" class="btn btn-outline-success btn-sm">Read More</a> -->
+                     <!-- <a href="" class="btn btn-outline-danger btn-sm"><i class="far fa-heart"></i></a> -->
+                   </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>     
+        <div class="col-lg-6 col-sm-12 d-flex justify-content-center align-items-center ">
+            {% if messages %}
+            
+                 {% for message in messages %}
+                  <div  style="position: absolute; top:0; right: 40% ; ">  
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                         {{message}}
+                    </div>
+                  </div>  
+                {% endfor %}
+              {%endif%}
+            <div class="card" style="width:80%;">
+                <div class="card-body mx-5 mt-5 px-5">
+                    {% for i in itm %}
+                    <span class="g-5">{{i.size}}   </span>
+                    {%endfor%} 
+                </div>
+                <div class="card-body mx-5 mb-5 px-5">
+                  <form action="{% url 'ad_varient' detaile.id %}" method="post"  >
+                    {% csrf_token %}
+                    {{form|crispy}}
+                    <button class="btn btn-primary mt-2" type="submit">Add varient</button>  
+                 </form>
+                </div> 
+            </div>                
+        </div>
+    </div>
+
+{%endblock%}

@@ -1,0 +1,108 @@
+
+{% extends "user-admin.html" %}
+
+{%load crispy_forms_tags %} 
+{% load sweetify %}
+
+{% block 'content' %}
+
+<div class="container-fluid row d-flex justify-content-center align-items-center boarder-5">
+
+     
+    {% if messages %}
+       
+          
+       {% for message in messages %}
+<!-- 
+            <div class="alert alert-info alert-dismissible fade show  text-center w-50 mt-3" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong>{{message}}</strong>
+            </div> -->
+            <!-- <script src="http//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+            {% if message.tags == 'error'%}
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script>
+                    var m="{{message}}";
+                    console.log(m);
+                    Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: m,
+                            showConfirmButton: false,
+                            timer: 3000
+                            })
+                   </script>
+                   {%endif%}
+            {% if message.tags == 'success'%}
+                   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                   <script>
+                       var m="{{message}}";
+                       console.log(m);
+                       Swal.fire({
+                               position: 'center',
+                               icon: 'success',
+                               title: m,
+                               showConfirmButton: false,
+                               timer: 7000
+                               })
+                      </script>
+                      {%endif%}       
+       {% endfor %}
+   {%endif%}
+   <!-- <div class="card">      -->
+    <h5 class="text-center">APPOINTMENT</h5>
+    <div class="row d-flex justify-content-center align-items-center mt-2 mb-2">
+        <div class="card p-5 col-6">
+            <form action="{% url 'patient:appoiment' id=1 %}" method="post" class="text-dark">
+                {%csrf_token%}
+                {{form.docter|as_crispy_field}}
+                {{form.appointment_date|as_crispy_field}}
+                <label for="id_appointment_time">Choose Time</label>
+                <select name="time" id="id_appointment_time" class="form-control">
+                </select>
+                {{form.reason|as_crispy_field}}
+                <div class=" d-flex justify-content-center align-items-center">
+                    <button type="submit" class="btn btn-primary rounded-pill w-50">submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+   </div> 
+<script>
+    // const form = document.getElementById('my-form');
+    // const docterInput = form.elements.docter;
+    // const selectedValue = docterInput.value;
+    // console.log(selectedValue)
+    const appointment_Date = document.getElementById("id_{{ form.appointment_date.html_name }}");
+    var appointmentTimeField = document.getElementById("id_appointment_time");            
+    let appointmentTimeSelect = null;
+   
+
+    appointment_Date.addEventListener("change", (event) => {
+      const selectedDate = event.target.value;
+      const selectedDoctor = document.getElementById("id_{{ form.docter.html_name }}").value;
+      console.log(selectedDoctor);
+      console.log(selectedDate);   
+      appointmentTimeField.innerHTML = "";
+      appointmentTimeSelect = null;                     
+      var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/Patient/get_available_time_slots/?date=' + selectedDate+ '&doctor=' + selectedDoctor);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            var availableTimeSlots = response.time_slots;
+            console.log(availableTimeSlots);
+            for (var i = 0; i < availableTimeSlots.length; i++) {
+                var timeSlot = availableTimeSlots[i];
+                var option = document.createElement('option');
+                option.value = timeSlot;
+                option.text = timeSlot;
+                appointmentTimeField.add(option);
+            }
+            appointmentTimeSelect = appointmentTimeField;
+            }
+        };
+        xhr.send();
+        });
+  </script>
+{%endblock%}

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    {%load crispy_forms_tags %}
+    {% load static %} 
+    {% load filt %}    
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ashion | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{% static 'Prod/css/Pd_bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'Prod/css/Pd_font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'Prod/css/Pd_elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'Prod/css/Pd_jquery-ui.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'Prod/css/Pd_magnific-popup.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'Prod/css/Pd_owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'Prod/css/Pd_slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'Prod/css/Pd_style.css' %}" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <style>
+                .qnt {
+            float: left;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .qnt>span {
+            font-size: 14px;
+            color: #111111;
+            font-weight: 600;
+            float: left;
+            margin-top: 14px;
+            margin-right: 15px;
+        }
+            .P_Quanty {
+            height: 50px;
+            width: 150px;
+            border: 1px solid #ebebeb;
+            border-radius: 50px;
+            padding: 0 20px;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .P_Quanty .qbtn {
+            font-size: 14px;
+            color: #666666;
+            cursor: pointer;
+            float: left;
+            width: 12px;
+            line-height: 46px;
+        }
+
+        .P_Quanty input {
+            font-size: 14px;
+            color: #666666;
+            font-weight: 500;
+            border: none;
+            float: left;
+            width: 84px;
+            text-align: center;
+            height: 48px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__close">+</div>
+        <ul class="offcanvas__widget">
+            <li><span class="icon_search search-switch"></span></li>
+            <li><a href="#"><span class="icon_heart_alt"></span>
+                <div class="tip">2</div>
+            </a></li>
+            <li><a href="#"><span class="icon_bag_alt"></span>
+                <div class="tip">2</div>
+            </a></li>
+        </ul>
+        <div class="offcanvas__logo">
+            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__auth">
+            <a href="#">Login</a>
+            <a href="#">Register</a>
+        </div>
+    </div>
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-3 col-lg-2">
+                    <div class="header__logo">
+                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-7">
+                    <nav class="header__menu">
+                        <ul>
+                            <li ><a href="">Home</a></li>                            
+                            <li><a href="#">Product</a></li>
+                            <li><a href="#">Doctors</a></li>
+                            <!-- <li><a href="#">Pages</a>
+                                <ul class="dropdown">
+                                    <li><a href="./product-details.html">Product Details</a></li>
+                                    <li><a href="./shop-cart.html">Shop Cart</a></li>
+                                    <li><a href="./checkout.html">Checkout</a></li>
+                                    <li><a href="./blog-details.html">Blog Details</a></li>
+                                </ul>
+                            </li> -->
+                            <li ><a href="">Appointment</a></li>
+                            <li><a href="">About</a></li>
+                            <li><a href="">Contact</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                {% if request.user.is_authenticated %}
+                <div class="col-lg-3">     
+                    <div class="header__right">   
+                    <ul class="header__right__widget">
+                        <li><a href="{% url 'home:cart' %}">cart</a></li>
+                        <li><a href="{% url 'home:signin' %}">Dashboard</a></li>  
+                        <li><a href="{% url 'home:lout' %}">Logout</a></li>
+                    </ul>
+                   </div> 
+                </div>    
+            {% else %}
+               <div class="col-lg-3"> 
+                <div class="header__right">   
+                    <ul class="header__right__widget">
+                        <li><a href="{% url 'patient:Pat_signup' %}">Register</a></li>   
+                        <li><a href="{% url 'home:signin' %}">Sign-in</a></li>
+                    </ul>
+                </div>    
+                </div>
+            {% endif %} 
+                       
+            </div>
+            <div class="canvas__open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href=""><i class="fa fa-home"></i> Home</a>
+                        <a href="#">Product </a>
+                        <span>Medicine</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Product Details Section Begin -->
+    <section class="product-details spad">
+        <div class="container">
+          {%if product %}
+            <div class="row">
+            {% for i in product %}
+                    <div class="col-lg-6">
+                        <div class="product__details__pic">
+                            <div class="product__details__pic__left product__thumb nice-scroll">
+                                <a class="pt active" href="#product-1">
+                                    <img src="{{i.image.url}}" alt="">
+                                </a>
+                                <a class="pt" href="#product-2">
+                                    <img src="{{i.image.url}}" alt="">
+                                </a>
+                                <a class="pt" href="#product-3">
+                                    <img src="{{i.image.url}}" alt="">
+                                </a>
+                                <a class="pt" href="#product-4">
+                                    <img src="{{i.image.url}}" alt="">
+                                </a>
+                            </div>
+                            <div class="product__details__slider__content">
+                                <div class="product__details__pic__slider owl-carousel">
+                                    <img data-hash="product-1" class="product__big__img" src="{{i.image.url}}" alt="">
+                                    <img data-hash="product-2" class="product__big__img" src="{{i.image.url}}" alt="">
+                                    <img data-hash="product-3" class="product__big__img" src="{{i.image.url}}" alt="">
+                                    <img data-hash="product-4" class="product__big__img" src="{{i.image.url}}" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <form  action="{% url 'home:add_cart' i.id %}" method="post">
+                        {%csrf_token%} 
+                       
+                        <div class="product__details__text">
+                            <h3>{{i.name}}<span></span></h3>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <span>( 138 reviews )</span>
+                            </div>
+                            <h5 >$<span   id="selected-Price"></span></h5>
+                            <input type="hidden" value="" id="price" name="price">
+                        <!-- $<div class="product__details__price" id="selected-Price"><span></span></div> -->
+                            <p>Nemo enim ipsam voluptatem quia aspernatur aut odit aut loret fugit, sed quia consequuntur
+                                magni lores eos qui ratione voluptatem sequi nesciunt.</p>
+                            <div class="product__details__button">
+                               <div class="qnt"> 
+                                  <span>Quantity:</span>
+                                  <div class="P_Quanty ">
+                                     <input type="text" class="form-control" id="qtvl" name="qty" value="1" readonly>
+                                     
+                                  </div>     
+                               </div>
+                               
+                                 <!-- <div class="qbtn input-group-append">
+                                        <a href="" class=" " ><i class="fa fa-plus"></i></a>
+                                     </div> -->
+
+                                 <!-- <div class="qbtn input-group-prepend ">
+                                         <a href="" class=" " ><i class="fa fa-minus"></i></a>
+                                     </div> -->
+
+
+                                <!-- <div class="quantity">
+                                    <span>Quantity:</span>
+                                    <div class="pro-qty">
+                                        <input type="text" name="qty"  value="1" disabled>
+                                    </div>
+                                </div> -->
+                                <button class="cart-btn  border-0" type="submit" name="action" value="cart">add to cart</button>
+                                <button class="cart-btn border-0" type="submit" name="action" value="buy">Buy</button>
+                            <!-- <ul>
+                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
+                            </ul> -->
+                            </div>
+                            <div class="product__details__widget">
+                                <ul>
+                                    <li>
+                                        <span>Availability:</span>
+                                        {% if i.is_available%}
+                                            <div class="stock__checkbox">
+                                                <label for="stockin">
+                                                    In Stock
+                                                    <input type="checkbox" id="stockin" checked>
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                        {% else%} 
+                                            <div class="stock__checkbox">
+                                                <label for="stockin">
+                                                    Out of Stock
+                                                    <input type="checkbox" id="stockin">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>  
+                                        {%endif%}     
+                                    </li>
+                               
+                                    <li>
+                                        <span>Available size:</span>
+                                        <div class="size__btn">
+                                         
+                                            {% for j in  i.item.all%}
+                                                {%if j.stock == 0 %}
+                                                   <p class="text-danger d-inline mx-2">out of stock({{j.size}})</p>
+                                                {%else%}
+                                                    <input type="radio" name="size" id="sz{{j.id}}" value="{{j.price}}" {% if forloop.first %}checked{% endif %} required>
+                                                    <label for="sz{{j.id}}">{{j.size}}</label>
+                                                    <input type="hidden" name="item" value="{{j.id}}">  
+                                               {%endif%}
+                                                <!-- {% with variant_name=j.size %}
+                                                  {% if variant_name|endswith:"500gm" %}
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="size" id="inlineRadio1" value="{{j.price}}" {% if forloop.first %}checked{% endif %}>
+                                                        <label class="form-check-label" for="inlineRadio1">500mg</label>
+                                                        <input type="hidden" name="sz" value="{{j.size}}"> 
+                                                    </div>
+                                                  {%endif%}
+                                                  {% if variant_name|endswith:"650gm" %}
+                                                    <div class="form-check form-check-inline">
+                                                         <input class="form-check-input" type="radio" name="size" id="inlineRadio2" value="{{j.price}}" {% if forloop.first %}checked{% endif %}>
+                                                        <label class="form-check-label" for="inlineRadio2">650gm</label>
+                                                        <input type="hidden" name="sz" value="{{j.size}}"> 
+
+                                                    </div>
+                                                  {%endif%} 
+                                                  {% if variant_name|endswith:"1200gm" %}
+                                                      <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="size" id="inlineRadio3" value="{{j.price}}" {% if forloop.first %}checked{% endif %}>
+                                                            <label class="form-check-label" for="inlineRadio3">1200mg</label>
+                                                            <input type="hidden" name="sz" value="{{j.size}}"> 
+
+                                                      </div>
+                                                  {%endif%}    
+                                                {% endwith %} -->
+                                                                                                
+                                            <!-- <div class="price">{{i.item.first.price}}<span class="me-1">$</span></div> -->
+                                            <!-- <span class="me-1">$</span> -->
+                                            {%endfor%}
+                                       
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span>Promotions:</span>
+                                        <p>Free shipping</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                      </form>  
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="product__details__tab">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Description</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Specification</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Reviews ( 2 )</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                                    <h6>Description</h6>
+                                    <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
+                                        quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
+                                        Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
+                                         voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
+                                        consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
+                                        consequat massa quis enim.</p>
+                                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
+                                        dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
+                                        nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
+                                        quis, sem.</p>
+                                </div>
+                                <div class="tab-pane" id="tabs-2" role="tabpanel">
+                                    <h6>Specification</h6>
+                                    <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
+                                        quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
+                                        Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
+                                        voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
+                                        consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
+                                        consequat massa quis enim.</p>
+                                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
+                                        dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
+                                        nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
+                                        quis, sem.</p>
+                                </div>
+                                <div class="tab-pane" id="tabs-3" role="tabpanel">
+                                    <h6>Reviews ( 2 )</h6>
+                                    <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
+                                        quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
+                                        Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
+                                        voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
+                                        consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
+                                        consequat massa quis enim.</p>
+                                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
+                                        dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
+                                        nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
+                                        quis, sem.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <!-- </form>   -->
+              {%endfor%}  
+            </div>
+          {%endif%}  
+           
+    <!-- Footer Section Begin -->
+    <footer class="footer shadow-lg p-3 mt-5 bg-body rounded">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-7">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                        cilisis.</p>
+                        <div class="footer__payment">
+                            <a href="#"><img src="img/payment/payment-1.png" alt=""></a>
+                            <a href="#"><img src="img/payment/payment-2.png" alt=""></a>
+                            <a href="#"><img src="img/payment/payment-3.png" alt=""></a>
+                            <a href="#"><img src="img/payment/payment-4.png" alt=""></a>
+                            <a href="#"><img src="img/payment/payment-5.png" alt=""></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-5">
+                    <div class="footer__widget">
+                        <h6>Quick links</h6>
+                        <ul>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Blogs</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">FAQ</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-4">
+                    <div class="footer__widget">
+                        <h6>Account</h6>
+                        <ul>
+                            <li><a href="#">My Account</a></li>
+                            <li><a href="#">Orders Tracking</a></li>
+                            <li><a href="#">Checkout</a></li>
+                            <li><a href="#">Wishlist</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-8 col-sm-8">
+                    <div class="footer__newslatter">
+                        <h6>NEWSLETTER</h6>
+                        <form action="#">
+                            <input type="text" placeholder="Email">
+                            <button type="submit" class="site-btn">Subscribe</button>
+                        </form>
+                        <div class="footer__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    <div class="footer__copyright__text">
+                        <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+                    </div>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+               <!-- <label for="xs-btn" class="active">
+                                            <input type="radio" id="xs-btn">
+                                            xs
+                                        </label>
+                                        <label for="s-btn">
+                                            <input type="radio" id="s-btn">
+                                            s
+                                        </label>
+                                        <label for="m-btn">
+                                            <input type="radio" id="m-btn">
+                                            m
+                                        </label>
+                                        <label for="l-btn">
+                                            <input type="radio" id="l-btn">
+                                            l
+                                        </label> -->
+
+     <!-- <li>
+                                    <span>Available color:</span>
+                                    <div class="color__checkbox">
+                                        <label for="red">
+                                            <input type="radio" name="color__radio" id="red" checked>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label for="black">
+                                            <input type="radio" name="color__radio" id="black">
+                                            <span class="checkmark black-bg"></span>
+                                        </label>
+                                        <label for="grey">
+                                            <input type="radio" name="color__radio" id="grey">
+                                            <span class="checkmark grey-bg"></span>
+                                        </label>
+                                    </div>
+                                </li> -->
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
+    <script>  
+//         var Qt = $('.P_Quanty');
+// 	Qt.prepend('<span class="dic qbtn">-</span>');
+// 	Qt.append('<span class="inc qbtn">+</span>');
+//     $(document).ready(function() {
+//     // Event handler for ".P_Quanty" elements
+//     $(document).on('click', '.P_Quanty', function() {
+// 		var $button = $(this);
+// 		var oldValue = $button.parent().find('input').val();
+//         console.log(oldValue);
+
+// 		if ($button.hasClass('inc')) {
+// 			var newVal = parseFloat(oldValue) + 1;
+//             console.log(newVal);
+// 		} else {
+// 			// Don't allow decrementing below zero
+// 			if (oldValue > 1) {
+// 				var newVal = parseFloat(oldValue) - 1;
+//                 console.log("haii");
+// 			} else {
+// 				newVal = 1;
+//                 console.log("noo");
+
+// 			}
+// 		}
+// 		$button.parent().find('input').val(newVal);
+//     });
+// });
+        
+ 
+var Qt = $('.P_Quanty');
+Qt.prepend('<span class="dec qbtn">-</span>');
+Qt.append('<span class="inc qbtn">+</span>');
+
+$(document).ready(function() {
+    $(document).on('click', '.qbtn', function() {
+        var $button = $(this);
+        var oldValue = $button.parent().find('input').val();
+
+        if ($button.hasClass('inc')) {
+            var newVal = parseFloat(oldValue) + 1;
+            console.log(newVal);
+        } else if ($button.hasClass('dec')) { 
+            
+            if (oldValue > 1) {
+                var newVal = parseFloat(oldValue) - 1;
+            } else {
+                newVal = 1;
+            }
+        }
+        $button.parent().find('input').val(newVal);
+    });
+});
+
+
+           
+                   
+        $(document).ready(function(){
+                var selectedValue = $('input[type=radio][name=size]:checked').val();
+                $('#selected-Price').text(selectedValue);
+                $('#price').val(selectedValue)  
+
+                $('input[type=radio][name=size]').change(function() {
+                var selectedValue = $('input[type=radio][name=size]:checked').val();
+                console.log(selectedValue)
+                $('#selected-Price').text(selectedValue);
+                $('#price').val(selectedValue)
+              });
+            });
+    </script> 
+    <!-- Js Plugins -->
+    <script src="{% static 'Prod/js/Pd_jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'Prod/js/Pd_bootstrap.min.js' %}"></script>
+    <script src="{% static 'Prod/js/Pd_jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'Prod/js/Pd_jquery-ui.min.js' %}"></script>
+    <script src="{% static 'Prod/js/Pd_mixitup.min.js' %}"></script>
+    <script src="{% static 'Prod/js/Pd_jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'Prod/js/Pd_jquery.slicknav.js' %}"></script>
+    <script src="{% static 'Prod/js/Pd_owl.carousel.min.js' %}"></script>
+    <script src="{% static 'Prod/js/Pd_jquery.nicescroll.min.js' %}"></script>
+    <script src="{% static 'Prod/js/Pd_main.js' %}"></script>
+</body>
+
+</html>

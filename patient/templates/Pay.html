@@ -1,0 +1,91 @@
+{% extends "user-admin.html" %}
+{%load crispy_forms_tags %} 
+{% block 'content' %}
+
+<div class="d-flex justify-content-center align-items-center">
+                 
+    {% if messages%}                  
+    {% for message in messages %}
+    {% if message.tags == 'error'%}
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            var m="{{message}}";
+            console.log(m);
+            Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: m,
+                    showConfirmButton: false,
+                    timer: 4000
+                    })
+           </script>
+           {%endif%}
+    {% if message.tags == 'success'%}
+           <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+           <script>
+               var m="{{message}}";
+               console.log(m);
+               Swal.fire({
+                       position: 'center',
+                       icon: 'success',
+                       title: m,
+                       showConfirmButton: false,
+                       timer: 4500
+                       })
+              </script>
+              {%endif%}       
+{% endfor %}
+{%endif%} 
+    <div class="card p-5 m-5 bg-body" style="width: 18rem;">
+       <h3 class="text-center">Payment</h3>
+       <div class="my-3">
+          <h5 class="d-inline">order ID<span class="float-right mr-2">{{order.id}}</span></h5>
+          <h5 class="d-inline">Payment ID<span class="float-right mr-2">{{order.razor_orderid}}</span></h5>  
+          <h5 class="d-inline">Amount<span class="float-right mr-2">{{order.Total_Price}}</span></h5> 
+       </div>
+       <button class="btn bg-body my-3" id="rzp-button2">Pay</button>
+       <a href="{% url 'patient:pay_cancel' order.id %}" class="btn btn-danger">Cancel</a>
+    </div>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script> 
+   <script>
+   var options = {
+       "key": "rzp_test_zXedqyyI6ertFX", 
+       "amount": "{{payment.amount}}", 
+       "currency": "INR",
+       "name": "Test corp",
+       "description": "Test Transaction",
+       "image": "https://example.com/your_logo",
+       "order_id": "{{payment.id}}", 
+       "handler": function (response){
+           
+           window.location.href='http://127.0.0.1:8000/Patient/ord_success/?razororder={{payment.id}}'
+       },
+       "prefill": {
+           "name": "{{request.user.name}}",
+           "email": "{{request.user.email}}",
+           "contact": "123456789"
+       },
+       "notes": {
+           "address": "Razorpay Corporate Office"
+       },
+       "theme": {
+           "color": "#3399cc"
+       }
+   };
+   var rzp1 = new Razorpay(options);
+   rzp1.on('payment.failed', function (response){
+           alert(response.error.code);
+           alert(response.error.description);
+           alert(response.error.source);
+           alert(response.error.step);
+           alert(response.error.reason);
+           alert(response.error.metadata.order_id);
+           alert(response.error.metadata.payment_id);
+   });
+   document.getElementById('rzp-button2').onclick = function(e){
+       rzp1.open();
+       e.preventDefault();
+   }
+   </script>  
+{%endblock%}

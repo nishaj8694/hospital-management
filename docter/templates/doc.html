@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {%load static%}
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta name="description" content=""/>
+  <meta name="author" content=""/>
+  <title>User_admin</title>
+  <!-- loader-->
+
+  <link href="{%static 'log/assets/css/pace.min.css' %}" rel="stylesheet"/>
+  <script src="{%static 'log/assets/js/pace.min.js' %}"></script>
+  <!--favicon-->
+  <link rel="icon" href="{% static 'log/assets/images/favicon.ico' %}" type="image/x-icon">
+  <!-- Vector CSS -->
+  <link href="{% static 'log/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css' %}" rel="stylesheet"/>
+  <!-- simplebar CSS-->
+  <link href="{%static 'log/assets/plugins/simplebar/css/simplebar.css' %}" rel="stylesheet"/>
+  <!-- Bootstrap core CSS-->
+  <link href="{%static 'Doc/css/prof.css' %}" rel="stylesheet"/>
+  
+  <link href="{%static 'log/assets/css/bootstrap.min.css' %}" rel="stylesheet"/>
+  <!-- animate CSS-->
+  <link href="{%static 'log/assets/css/animate.css' %}" rel="stylesheet" type="text/css"/>
+  <!-- Icons CSS-->
+  <link href="{%static 'log/assets/css/icons.css' %}" rel="stylesheet" type="text/css"/>
+  <!-- Sidebar CSS-->
+  <link href="{% static 'log/assets/css/sidebar-menu.css' %}" rel="stylesheet"/>
+  <!-- Custom Style-->
+  <link href="{% static 'log/assets/css/app-style.css' %}" rel="stylesheet"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+  <!-- @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css"); -->
+
+</head>
+
+<body class="bg-theme bg-theme1">
+ 
+<!-- Start wrapper-->
+  <div id="wrapper">
+ 
+  <!--Start sidebar-wrapper-->
+     <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
+        <div class="brand-logo">
+          <a href="">
+            <img src="{% static 'log/assets/images/logo-icon.png' %}" class="logo-icon" alt="logo icon">
+            <h5 class="logo-text">user Admin</h5>
+          </a>
+        </div>
+        <ul class="sidebar-menu do-nicescrol">
+          <li class="sidebar-header">MAIN NAVIGATION</li>
+          <li class="">
+            <a href="{% url 'docter:doc_dashboard'%}">
+            <i class="zmdi zmdi-view-dashboard"></i> <span>Dashboard</span>
+            </a>
+          </li>
+          <!-- <li>
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"></div>
+          </li> -->
+          <!-- <li>
+            <a href="{% url 'docter:doc_dashboard'%}">
+              <i class="zmdi zmdi-invert-colors"></i> <span>Dashboard</span>
+            </a>
+          </li> -->
+          
+          <li>
+            <a href="{% url 'docter:doc_appointment' %}">
+              <i class="zmdi zmdi-format-list-bulleted"></i> <span>My Appointent</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="{% url 'docter:docno' %}" >
+              <i class="zmdi zmdi-format-list-bulleted"></i> <span>medicine</span>
+            </a>
+          </li>
+           
+          <li>
+            <a href="{% url 'docter:myPatient'%}"> 
+              <i class="zmdi zmdi-format-list-bulleted"></i> <span>Patient</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'docter:doc_chat'%}"> 
+              <i class="zmdi zmdi-format-list-bulleted"></i> <span>Chat</span>
+            </a>
+          </li>
+          
+            
+    
+            
+            <style>
+            .switch {
+              position: relative;
+              display: inline-block;
+              width: 90px;
+              height: 30px;
+              border-radius: 10px;
+            }
+            
+            .switch input {
+              opacity: 0; 
+              width: 0;
+              height: 0;
+              /* display: none; */
+            }
+            
+            .slider {
+              position: absolute;
+              cursor: pointer;
+              border-radius: 20px;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background-color: #ccc;
+              -webkit-transition: .5s;
+              transition: .5s;
+            }
+            
+            .slider:before {
+
+              position: absolute;
+              content: "";
+              height: 22px;
+              width: 22px;
+              border-radius: 20px;
+              left: 4px;
+              bottom: 4px;
+              background-color: white;
+              -webkit-transition: .4s;
+              transition: .4s;
+            }
+            
+            input:checked + .slider {
+              background-color: #2196F3;
+            }
+            
+            input:focus + .slider {
+              box-shadow: 0 0 1px #2196F3;
+            }
+            
+            input:checked + .slider:before {
+              -webkit-transform: translateX(56px);
+              -ms-transform: translateX(56px);
+              transform: translateX(56px);
+            }
+            .switch-text {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 10px;
+                font-weight: bold;
+                color: #FFF;
+                text-transform: uppercase;
+                pointer-events: none;
+              }
+
+              .switch-text.on {
+                left: 8px;
+              }
+
+              .switch-text.off {
+                right: 8px;
+              }
+            </style>
+            
+          
+        </ul>
+        <ul style="list-style: none;">
+          <li>
+            <div class="" style="position: absolute; bottom: 75px;">
+               <h6 class="ml-2">Availability</h6>
+               <label class="switch ">
+                  <input type="checkbox"  id="toggle-switch" data-id="{{ docter.id }}" {% if docter.is_available %}checked{% endif %}>
+                  <span class="slider"></span>
+                  <span class="switch-text on">On</span>
+                  <span class="switch-text off">Off</span>
+               </label>
+            </div>
+          </li>  
+          <li>
+            <a href="{% url 'home:lout' %}" style="position: absolute; bottom:50px;">
+              <i class="zmdi zmdi-lock"></i> <span>Log-out</span>
+            </a>
+          </li>
+
+        </ul>
+   
+      </div>
+                   
+      {% if messages%}                  
+      {% for message in messages %}
+      {% if message.tags == 'error'%}
+          <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+          <script>
+              var m="{{message}}";
+              console.log(m);
+              Swal.fire({
+                      position: 'center',
+                      icon: 'error',
+                      title: m,
+                      showConfirmButton: false,
+                      timer: 4000
+                      })
+             </script>
+             {%endif%}
+      {% if message.tags == 'success'%}
+             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+             <script>
+                 var m="{{message}}";
+                 console.log(m);
+                 Swal.fire({
+                         position: 'center',
+                         icon: 'success',
+                         title: m,
+                         showConfirmButton: false,
+                         timer: 4500
+                         })
+                </script>
+                {%endif%}       
+ {% endfor %}
+{%endif%} 
+   <!--End sidebar-wrapper-->
+
+<!--Start topbar header-->
+<header class="topbar-nav">
+ <nav class="navbar navbar-expand fixed-top">
+  <ul class="navbar-nav mr-auto align-items-center">
+    <li class="nav-item">
+      <a class="nav-link toggle-menu" href="javascript:void();">
+       <i class="icon-menu menu-icon"></i>
+     </a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'home:home'%}">Home</a>
+      <!-- <form class="search-bar">
+        <input type="text" class="form-control" placeholder="Enter keywords">
+         <a href="javascript:void();"><i class="icon-magnifier"></i></a>
+      </form> -->
+    </li>
+  </ul>
+     
+  <ul class="navbar-nav align-items-center right-nav-link">
+    <!-- <li class="nav-item dropdown-lg">
+      <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown" href="javascript:void();">
+      <i class="fa fa-envelope-open-o"></i></a>
+    </li>
+    <li class="nav-item dropdown-lg">
+      <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown" href="javascript:void();">
+      <i class="fa fa-bell-o"></i></a>
+    </li> -->
+    <!-- <li class="nav-item language">
+      <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown" href="javascript:void();"><i class="fa fa-flag"></i></a>
+      <ul class="dropdown-menu dropdown-menu-right">
+          <li class="dropdown-item"> <i class="flag-icon flag-icon-gb mr-2"></i> English</li>
+          <li class="dropdown-item"> <i class="flag-icon flag-icon-fr mr-2"></i> French</li>
+          <li class="dropdown-item"> <i class="flag-icon flag-icon-cn mr-2"></i> Chinese</li>
+          <li class="dropdown-item"> <i class="flag-icon flag-icon-de mr-2"></i> German</li>
+        </ul>
+    </li> -->
+    <li class="nav-item">
+      <a class="nav-link dropdown-toggle dropdown-toggle-nocaret bg-black" data-toggle="dropdown" href="#">
+        <span class="user-profile">
+           {% if docter%} 
+              {% if docter.image%}
+                <img src="{{docter.image.url}}" class="img-circle " alt="" style="background-color: black; width: 40px; height: 100%">
+                
+              {%else%}
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
+                    alt="avatar 3" style="width: 40px; height: 100%;">
+              
+              {%endif%}
+                 
+           {%else%}
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
+                    alt="avatar 3" style="width: 40px; height: 100%;">
+           {%endif%}       
+        
+            
+        </span>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-right">
+       <li class="dropdown-item user-details">
+        <a href="javaScript:void();">
+           <div class="media">
+             <!-- <div class="avatar"><img class="align-self-start mr-3" src="" alt="user avatar"></div> -->
+            <div class="media-body">
+            <h6 class="mt-2 user-title">{{request.user}}</h6>
+            </div>
+           </div>
+          </a>
+        </li>
+        <li class="dropdown-divider"></li>
+        <li class="dropdown-item"><i class="icon-wallet mr-2"></i>Profile</li>
+        <li class="dropdown-divider"></li>
+        <li class="dropdown-item"><i class="icon-power mr-2"></i>Logout</li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+</header>
+<!--End topbar header-->
+
+<div class="clearfix"></div>
+	
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      
+
+
+
+      {% block 'content' %}
+
+
+      {% endblock %}
+  
+	<!--start overlay-->
+		  <div class="overlay toggle-menu"></div>
+		<!--end overlay-->
+		
+    </div>
+    <!-- End container-fluid-->
+    
+    </div><!--End content-wrapper-->
+   <!--Start Back To Top Button-->
+    <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+    <!--End Back To Top Button-->
+</div>	
+	<!--Start footer-->
+<!-- <footer class="footer">
+  <div class="container">
+      <div class="text-center">
+          Copyright © 2022 Hospital
+        </div>
+    </div>
+</footer> -->
+	
+  </div><!--End wrapper-->
+
+<script>
+
+  $(document).ready(function() {
+    $('#toggle-switch').change(function() {
+      var itemId = $(this).data('id');
+      var isAvailable = $(this).prop('checked');
+      console.log('work');
+      $.ajax({
+        url: '/docter/update_is_available',
+        method: 'POST',
+        data: {
+          'item_id': itemId,
+          'is_available': isAvailable,
+        },
+        success: function(response) {
+          // Update the toggle switch based on the current availability status
+          if (response.is_available) {
+            $('#toggle-switch').prop('checked', true);
+          } else {
+            $('#toggle-switch').prop('checked', false);
+          }
+        },
+        error: function(xhr) {
+          console.log(xhr.statusText + ': ' + xhr.responseText);
+        }
+      });
+    });
+  });
+</script>
+  
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'log/assets/js/jquery.min.js' %}"></script>
+  <script src="{% static 'log/assets/js/popper.min.js' %}"></script>
+  <!-- <script src="{% static 'log/assets/js/bootstrap.min.js' %}"></script> -->
+	
+ <!-- simplebar js -->
+  <script src="{% static 'log/assets/plugins/simplebar/js/simplebar.js' %}"></script>
+  <!-- sidebar-menu js -->
+  <script src="{% static 'log/assets/js/sidebar-menu.js' %}"></script>
+  <!-- loader scripts -->
+  <script src="{% static 'log/assets/js/jquery.loading-indicator.js' %}"></script>
+  <!-- Custom scripts -->
+  <script src="{% static 'log/assets/js/app-script.js' %}"></script>
+  <!-- Chart js -->
+  
+  <script src="{% static 'log/assets/plugins/Chart.js/Chart.min.js' %}"></script>
+ 
+  <!-- Index js -->
+  <script src="{% static 'log/assets/js/index.js' %}"></script>
+
+ 
+  
+</body>
+</html>

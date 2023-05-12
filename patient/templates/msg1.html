@@ -1,0 +1,23 @@
+{% extends "pat_chat.html" %}
+     {% load static%}
+
+
+            {% block 'subject' %}
+                  <div id="chat-popup" class="chat-popup card">
+                    <div class="chat-popup-header col-lg-12 shadow-lg p-2 rounded p-2" >
+                      <span class="chat-room-name" >{{Person.docter}}</span><span class="mt-1" id="user-onoff"></span>
+                      <button type="button" id="close-chat-btn" class="btn btn-ligth" style="float: right; margin-bottom: 2px;">*</button>     
+                    </div>
+                       <div id="chat-log" style="width: 500px; height: 400px; position: relative; padding-top: 5px;" disabled></div>
+                       <div style="position: relative; margin-bottom: 10px;">
+                          <input id="chat-message-input" class=" w-100 rounded-pill border-0"  type="text" style="height: 40px; padding-left:15px ; " >
+                          <button id="chat-message-submit" class="btn btn-primary rounded-pill"  style="position:absolute; right: 3px; bottom: 2px;">Send</button>
+                       </div>
+                        {{ id|json_script:"id" }}
+                        {{username|json_script:"username"}}
+                        
+                        <script src="{% static 'chat\js\chat.js' %}"></script>   
+                    </div> 
+               
+            {%endblock%}
+        
