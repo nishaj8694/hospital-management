@@ -22,7 +22,7 @@ class DoctorProfile(models.Model):
     department=models.ForeignKey(Department,on_delete=models.CASCADE,null=True)
     address=models.TextField(max_length=200,null=True)
     residence=models.TextField(max_length=200,null=True)
-    contact_number = models.CharField(max_length=10,null=True)
+    contact_number = models.CharField(max_length=15,null=True)
     badge_id=models.CharField(max_length=50,null=True)
     is_available=models.BooleanField(default=False)
     def __str__(self):

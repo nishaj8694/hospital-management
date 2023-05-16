@@ -36,38 +36,51 @@
           {%endif%}       
 {% endfor %}
 {%endif%} 
-<div class="row justify-content-center align-items-center">
-  <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12"> 
-      <div class="row">
-        <div class="col-xl-6 col-lg-5 col-md-4 col-sm-12 col-xs-12 ">   
-          <div class="card container-fluid mt-5 mb-5">
-            <h5 class="px-1 text-uppercase ml-5 mt-3">Doctor - {{request.user}}</h5>
+<style>
+  
+  .lc{
+  padding: 0;
+  }
+  .slid {
+    /* position: absolute; */
+    cursor: pointer;
+    float:right;
+    height: 20px;
+    width: 20px;
+    border-radius: 20px;
+  }
+  
+</style> 
+      <div class="row  no-gutters m-5 justify-content-center rounded-2  p-0">
+        <div class="col-lg-4 col-md-4  col-sm-3 col-xs-2 bg-light  lc" style="height:505px">    
+            <h5 class="px-1 text-uppercase ml-5 mt-3">{{request.user}}</h5>
             <ul id="user-list">
               {% for i in pat%}
           <!-- <a href="" -->
                 {% if i.patient.user.online%}
                   <li  data-username="{{ i.patient.user}}" style="list-style: none;"> 
-                     <a href="{%url 'docter:msgg' i.id %}" style="color: green"  id="{{i.patient.user.username}}_status" class="btn btn-light m-1 open-chat-btn" value="{{i.docter_id}}" >{{i.patient}}</a><br>      
+                     <a href="{%url 'docter:msgg' i.id %}" id="{{i.patient.user.username}}_status" 
+                     class="btn btn-light w-75 m-1 open-chat-btn" value="{{i.docter_id}}" >{{i.patient}}
+                     <h6 class="d-inline slid float-right bg-success" id="light{{i.docter_id}}"></h6> 
+                    </a>      
                  </li>
                 {%else%}
                  <li  data-username="{{ i.patient.user}}" style="list-style: none;"> 
-                  <a href="{%url 'docter:msgg' i.id %}" style="color: rgb(226, 236, 226)"  id="{{i.patient.user.username}}_status" class="btn btn-light m-1 open-chat-btn" value="{{i.docter_id}}" >chat with <span class="text-dark">{{i.patient}}
-                   </span></a><br>      
+                    <a href="{%url 'docter:msgg' i.id %}" id="{{i.patient.user.username}}_status"
+                     class="btn btn-light  w-75 m-1 open-chat-btn" value="{{i.docter_id}}" >{{i.patient}}
+                     <h6 class="d-inline slid float-right bg-danger" ></h6> 
+                    </a>         
                  </li>
                 {%endif%}   
           <!-- <button class="btn btn-primary m-1 open-chat-btn"  >chat with <span class="text-success">{{i.docter}}</span> </button><br> -->
               {% endfor %}
             </ul>
-          </div>
-        </div>  
-        <div class="col-xl-6 col-lg-7 col-md-8 col-sm-12 col-xs-12 ">
-            {% block 'subject' %}
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-5 col-xs-4 lc" >      
+          {% block 'subject' %}
 
 
-            {% endblock %}
-     
-        </div> 
-    </div>
-  </div> 
-</div>     
+          {% endblock %}
+        </div>
+      </div>      
 {%endblock%}

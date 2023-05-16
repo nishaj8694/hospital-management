@@ -13,14 +13,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
         username = str(self.scope["user"])
         self.room_name =a=self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = "chat_%s" % self.room_name
-
+        
         user_id = self.scope['user'].id
         user_qs = await sync_to_async(User.objects.filter)(id=user_id)
         await sync_to_async(user_qs.update)(online=True)
-
+        username = str(self.scope["user"])
+        
         user_s = await sync_to_async(User.objects.filter)(id=user_id)
         user = await sync_to_async(user_s.first)()
         online = user.online if user else False
+
+        
+       
         await self.channel_layer.group_add(
             self.room_group_name, self.channel_name
         )
@@ -30,23 +34,42 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
 
-        await self.send(text_data=json.dumps({
-            'type': 'user_join',
-            'username': username,
-            'online': online
-         }))     
+        await self.channel_layer.group_send(
+            self.room_group_name,
+        {
+            'type': 'chat_join',
+            'username': 'username',
+            'online':online 
+        }
+    )
 
 
     async def disconnect(self, close_code):
+        user_id = self.scope['user'].id
+        user_qs = await sync_to_async(User.objects.filter)(id=user_id)
+        await sync_to_async(user_qs.update)(online=False)
+        username = str(self.scope["user"])
+        
+        user_s = await sync_to_async(User.objects.filter)(id=user_id)
+        user = await sync_to_async(user_s.first)()
+        online = user.online if user else False
+
+        await self.channel_layer.group_send(
+            self.room_group_name,
+        {
+            'type': 'chat_leave',
+            'username': 'username',
+            'online':online 
+        }
+    )
+
+    
+        
         await self.channel_layer.group_discard(
             self.room_group_name, self.channel_name
             
         )
 
-        user_id = self.scope['user'].id
-        user_qs = await sync_to_async(User.objects.filter)(id=user_id)
-        await sync_to_async(user_qs.update)(online=False)
-        username = str(self.scope["user"])
 
         
 
@@ -55,26 +78,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
           text_data_json = json.loads(text_data)
           message = text_data_json['message']
           username = str(self.scope["user"])
-        #   online = self.scope['user'].online
-          user_id = self.scope['user'].id
-          user_qs = await sync_to_async(User.objects.filter)(id=user_id)
-          user = await sync_to_async(user_qs.first)()
-          online = user.online if user else False
 
-          user_qs = await sync_to_async(User.objects.filter)(id=user_id)
-          await sync_to_async(user_qs.update)(online=True)
-
-          if 'type' in text_data_json and text_data_json['type'] == 'user_join':
-                username = text_data_json['username']
-                online = text_data_json['online']
-          else:
-            await self.channel_layer.group_send(
+          await self.channel_layer.group_send(
              self.room_group_name,
              {
                 'type': 'chat_message',
                 'message': message,
                 'username': username,
-                'online': online
             }
         )
           
@@ -83,7 +93,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def chat_message(self, event):
         message = event['message']
         username = event["username"]
-        online = event['online']
         
         css_class = 'current-user' if username == self.scope["user"].username else 'other-user'
 
@@ -91,11 +100,132 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'message': message,
             'username': username,
             'css_class':css_class,
-            'is_online': online,
 
             
 
      }))
+        
+    async def chat_leave(self, event):
+    
+        username = event["username"]
+        online = event['online']
+        
+
+        await self.send(text_data=json.dumps({
+
+            'username': username,
+            'is_online': online,
+
+            
+
+     })) 
+
+    async def chat_join(self, event):
+    
+        username = event["username"]
+        online = event['online']
+        
+
+        await self.send(text_data=json.dumps({
+
+            'username': username,
+            'is_online': online,
+
+            
+
+     }))        
 
    
 
+# class OnlineConsumer(AsyncWebsocketConsumer):
+#     async def connect(self):
+#         username = str(self.scope["user"])
+#         self.room_name =a=self.scope["url_route"]["kwargs"]["room_name"]
+#         self.room_group_name = "chat_%s" % self.room_name
+        
+#         user_id = self.scope['user'].id
+#         user_qs = await sync_to_async(User.objects.filter)(id=user_id)
+#         await sync_to_async(user_qs.update)(online=True)
+#         username = str(self.scope["user"])
+        
+#         user_s = await sync_to_async(User.objects.filter)(id=user_id)
+#         user = await sync_to_async(user_s.first)()
+#         online = user.online if user else False
+
+        
+       
+#         await self.channel_layer.group_add(
+#             self.room_group_name, self.channel_name
+#         )
+
+          
+
+#         await self.accept()
+
+
+#         await self.channel_layer.group_send(
+#             self.room_group_name,
+#         {
+#             'type': 'chat_join',
+#             'username': 'username',
+#             'online':online 
+#         }
+#     )
+
+
+#     async def disconnect(self, close_code):
+#         user_id = self.scope['user'].id
+#         user_qs = await sync_to_async(User.objects.filter)(id=user_id)
+#         await sync_to_async(user_qs.update)(online=False)
+#         username = str(self.scope["user"])
+        
+#         user_s = await sync_to_async(User.objects.filter)(id=user_id)
+#         user = await sync_to_async(user_s.first)()
+#         online = user.online if user else False
+
+#         await self.channel_layer.group_send(
+#             self.room_group_name,
+#         {
+#             'type': 'chat_leave',
+#             'username': 'username',
+#             'online':online 
+#         }
+#     )
+
+    
+        
+#         await self.channel_layer.group_discard(
+#             self.room_group_name, self.channel_name
+            
+#         )
+
+    
+#     async def chat_leave(self, event):
+    
+#         username = event["username"]
+#         online = event['online']
+        
+
+#         await self.send(text_data=json.dumps({
+
+#             'username': username,
+#             'is_online': online,
+
+            
+
+#      })) 
+
+    # async def chat_join(self, event):
+    
+    #     username = event["username"]
+    #     online = event['online']
+        
+
+    #     await self.send(text_data=json.dumps({
+
+    #         'username': username,
+    #         'is_online': online,
+
+            
+
+    #  }))        

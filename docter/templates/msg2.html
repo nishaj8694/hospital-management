@@ -2,27 +2,34 @@
 
 {% load static%}
 
-      {% block 'subject' %}
-      <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-5" >
-          <div id="chat-popup" class="chat-popup card row">
-            <div class="chat-popup-header col-lg-12 shadow-lg p-2 rounded p-2" >
-              <span class="chat-room-name" >chat-{{Person.docter}}</span><span class="mt-1" id="user-onoff"></span>
-              <button type="button" id="close-chat-btn" class="btn btn-ligth" style="float: right; margin-bottom: 2px;">*</button>     
-            </div>
-            <div class="chat-popup-body col-lg-12 pt-1" >
-               <div id="chat-log" style="width: 500px; height: 400px; position: relative; padding-top: 5px;" disabled></div>
-               <div style="position: relative; margin-bottom: 10px;">
-                  <input id="chat-message-input" class=" w-100 rounded-pill border-0"  type="text" style="height: 40px; padding-left:15px ; " >
-                  <button id="chat-message-submit" class="btn btn-primary rounded-pill"  style="position:absolute; right: 3px; bottom: 2px;">Send</button>
-               </div>
-                {{ id|json_script:"id" }}
-                {{username|json_script:"username"}}
-    
-            </div> 
+    {% block 'subject' %}
+    <div id="chat-popup" class="chat-popup card">
+      <div class="chat-popup-header col-lg-12 shadow-lg p-2 rounded p-2" >
+        <div class="row">
+          <div class="col-10">
+            {% if Person.patient.user.online%}
+                <h5 class="chat-room-name  ml-2 " >{{Person.patient}}</h5>
+                <h6 class="ml-1 " id="user-onoff">online</h6>
+            {%else%}
+                <h5 class="chat-room-name  ml-2 " >{{Person.patient}}</h5>
+                <h5 class="ml-1 " id="user-onoff">offline</h6>
+            {%endif%} 
+
           </div>
-        </div>
-       <script src="{% static 'chat\js\chat.js' %}"></script>
+          <div class="col-2">    
+              <button type="button" id="close-chat-btn" class="btn btn-ligth" style="float: right; margin-bottom: 2px;">X</button>     
+          </div>  
+         
       </div>
+         <div id="chat-log" class="px-4" style="height: 385px; overflow-y: scroll; position: relative;" disabled></div>
+         <div style="position: relative; margin-bottom: 10px;" class="mx-2">
+            <input id="chat-message-input" class=" w-100 bg-light rounded-pill border-0"  type="text" style="height: 40px; padding-left:15px ; " >
+            <button id="chat-message-submit" class="btn btn-primary rounded-pill"  style="position:absolute; right: 3px; bottom: 2px;">Send</button>
+         </div>
+          {{ id|json_script:"id" }}
+          {{username|json_script:"username"}}
+          
+          <script src="{% static 'chat\js\chat.js' %}"></script>   
+      </div>      
        
     {%endblock%}

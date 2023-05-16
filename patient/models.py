@@ -8,7 +8,7 @@ class patientProfile(models.Model):
         ('Female','Female')
     )
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='patient_profile')
-    contact_number = models.CharField(max_length=10,null=True)
+    contact_number = models.CharField(max_length=15,null=True)
     gender=models.CharField(max_length=100,  choices=choice)
     image=models.ImageField(upload_to='pat')
     is_verify=models.BooleanField(default=False)
@@ -22,7 +22,7 @@ class patientProfile(models.Model):
 
 class wallet(models.Model):
     PatientProfile=models.ForeignKey(patientProfile,on_delete=models.CASCADE,null=True)
-    amount=models.PositiveIntegerField()
+    amount=models.PositiveIntegerField(null=True)
 
 
 class Address(models.Model):

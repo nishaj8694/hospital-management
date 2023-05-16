@@ -23,15 +23,15 @@ from .forms import adrs_form,patient_form
 from django.template.loader import get_template
 from io import BytesIO
 from django.http import HttpResponse
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
-from reportlab.lib.units import inch
+# from reportlab.pdfgen import canvas
+# from reportlab.lib.pagesizes import letter
+# from reportlab.lib.units import inch
 from xhtml2pdf import pisa
 import uuid
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django_otp import devices_for_user
-from django_otp.plugins.otp_totp.models import TOTPDevice
+# from django_otp import devices_for_user
+# from django_otp.plugins.otp_totp.models import TOTPDevice
 from twilio.rest import Client
 import random
 import razorpay
