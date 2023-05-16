@@ -1,4 +1,5 @@
 
+
 var openChatBtn = document.getElementsByClassName("open-chat-btn");
 var chatPopup = document.getElementById("chat-popup");
 
@@ -8,7 +9,10 @@ var chatPopup = document.getElementById("chat-popup");
 
     // When the user clicks the close button, close the chat popup
     closeChatBtn.onclick = function() {
-      chatPopup.style.display = "none";
+
+        chatPopup.style.display = "none";
+        chatSocket.close();
+
     }
 
 // var onoff = document.getElementById("user-onoff");
@@ -36,26 +40,32 @@ const roomName = JSON.parse(document.getElementById('id').textContent);
                         msge.innerText = data.message;
                         if (data.css_class === "current-user") {
                             msge.style.textAlign = 'right';
-                            msge.style.marginRight='50px'
                             msge.style.color = 'blue';
                         } else {
                             msge.style.textAlign = 'left';
                             msge.style.color = 'red';
-                            msge.style.marginleft='50px'
 
                           
                         }
                     chatLog.appendChild(msge);
                    
                     }
-                    if (data.is_online) {
-                        onoff.innerHTML = 'online';
-                        onoff.style.color = 'green';
-                    } else {
-                        console.log(data.is_online);
-                        onoff.innerHTML = 'offline';
-                        onoff.style.color = 'red';
-                    } 
+                    if(data.is_online !=undefined){
+
+                        if (data.username != user){
+    
+                            if (data.is_online) {
+                                onoff.innerHTML = 'online';
+                                onoff.style.color = 'green';
+                            } else {
+                                console.log('userrr')
+                                console.log(data.is_online);
+                                onoff.innerHTML = 'offline';
+                                onoff.style.color = 'red';
+                            } 
+                        }
+                    }  
+                    
                 };
                 chatSocket.onopen = function(e){
                     console.log("CONNECTION ESTABLISHED");
