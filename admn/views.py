@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.shortcuts import get_object_or_404
 from home.models import User,Order,orderItem,Cart,Refund
 from patient.models import patientProfile,wallet
-from docter.models import DoctorProfile
+from docter.models import DoctorProfile,Department
 from .forms import pform,vform,coupenform,medicineform
 from django.contrib.auth import logout,login
 from django.views.decorators.cache import cache_control
@@ -42,7 +42,7 @@ from .models import Medicine_type,coupen
 from django.views.decorators.csrf import csrf_exempt
 from .forms import MonthYearForm 
 from django.http import JsonResponse
-
+from docter.forms import department_form
 # Create your views here.
 
 # @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -616,6 +616,7 @@ def pat_up(request):
         user.first_name = fullname
         user.is_patient=True
         user.email=email
+        user.save()
         crt=Cart.objects.create(user=user)
         profile=patientProfile.objects.create(user=user)
         walt=wallet.objects.create(PatientProfile=profile)
@@ -659,6 +660,7 @@ def doc_up(request):
         user = User.objects.create_user(username=username, password=password,is_docter=True)
         user.first_name = fullname
         user.email=email
+        user.save()
         Patient=DoctorProfile.objects.create(user=user)
         Patient.save()
         user.save()
@@ -666,6 +668,44 @@ def doc_up(request):
         return redirect('show_doct')
     else:
         return render(request, 'admin_doc_signin.html',{'page':'doc'})
+
+def department_show(request):
+    department=Department.objects.all()    
+    return render(request, 'department_show.html',{'page':'depart','department':department})
+
+def department_add(request):
+    if request.method=='POST':
+        form=department_form(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('department')
+    else:
+        form=department_form()
+        return render(request, 'department_add.html',{'page':'depart','form':form})
+def department_edit(request,id):
+    if request.method=='POST':
+        form=department_form(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('department')
+    else:
+        dep=Department.objects.get(id=id)
+        print(dep)
+        form=department_form(instance=dep)
+        return render(request, 'department_edit.html',{'page':'depart','form':form,'id':id})    
+         
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@csrf_exempt    
+def department_delete(request):
+    if request.method=='POST':
+       id=request.POST.get('id')
+       cate=Department.objects.filter(id=id)
+       cate.delete()
+       return JsonResponse({'success':True})
+    else:
+        return JsonResponse({'success':False})
+           
 
 def orderstatus(request):
     if request.method=='POST':

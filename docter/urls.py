@@ -38,6 +38,7 @@ urlpatterns = [
  path('decr/<int:id>',views.decr,name='decr'),
  path('incr/<int:id>',views.incr,name='incr'),
  path('pre2/<int:id>',views.pre2,name='pre2'),
+ 
 
 
 

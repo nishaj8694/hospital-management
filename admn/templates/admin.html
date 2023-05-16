@@ -71,7 +71,8 @@
 
                                 </nav>
                             </div>
-                                <a class="nav-link collapsed {% if page == 'doc'%} active {% elif page == 'doc-s' %} active {%endif%}" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts1" aria-expanded="false" aria-controls="collapseLayouts">
+                                <a class="nav-link collapsed {% if page == 'doc'%} active {% elif page == 'doc-s' %}
+                                 active {% elif page == 'depart' %} {%endif%}" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts1" aria-expanded="false" aria-controls="collapseLayouts">
                                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                     Doctor
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -80,6 +81,7 @@
                                     <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link {% if page == 'doc' %}active {%endif%}" href="{% url 'doc_up'%}">Add Doctor</a>
                                         <a class="nav-link {% if page == 'doc-s' %}active {%endif%}" href="{% url 'show_doct' %}">show Doctor</a>
+                                        <a class="nav-link {% if page == 'depart' %}active {%endif%}" href="{% url 'department' %}">Department</a>
 
                                     </nav>
                                 </div>

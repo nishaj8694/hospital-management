@@ -62,6 +62,10 @@ urlpatterns = [
     path('coupndelete',views.coupndelete,name='coupndelete'),
     path('coupnshow',views.coupnshow,name='coupnshow'),
     path('sales_search',views.sales_search,name='sales_search'),
+    path('department',views.department_show,name='department'),
+    path('department_add',views.department_add,name='department_add'),
+    path('department_edit/<int:id>',views.department_edit,name='department_edit'),
+    path('department_delete',views.department_delete,name='department_delete'),
 
 
 

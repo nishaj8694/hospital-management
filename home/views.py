@@ -32,7 +32,7 @@ import razorpay
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django_otp import devices_for_user
-from django_otp.plugins.otp_totp.models import TOTPDevice
+# from django_otp.plugins.otp_totp.models import TOTPDevice
 from twilio.rest import Client
 import random
 from django.contrib import messages
