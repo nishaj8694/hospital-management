@@ -66,7 +66,7 @@ CACHE_MIDDLEWARE_SECONDS = 0
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 ROOT_URLCONF = 'hosp_mng.urls'
 SWEETIFY_SWEETALERT_LIBRARY = 'sweetalert2'
-# WSGI_APPLICATION = 'hosp_mng.wsgi.application'
+WSGI_APPLICATION = 'hosp_mng.wsgi.application'
 ASGI_APPLICATION = 'hosp_mng.asgi.application'
 
 
@@ -118,27 +118,6 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE':'django.db.backends.postgresql',
-#         'NAME': 'hospitalcourse',
-#         'USER': os.getenv('USER'),
-#         'PASSWORD': os.getenv('PASSWORD'),
-#         'HOST': '',
-#         'PORT': '5432',
-#     }
-# }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'myproject',
-#         'USER': os.getenv('USER'),
-#         'PASSWORD': os.getenv('PASSWORD'),
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     }
-# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

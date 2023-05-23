@@ -5,7 +5,10 @@
     <div class="row g-4">
         <div class="col-12">
             <div class="bg-light rounded h-100 p-4">
-                <h6 class="mb-4">PATIENT LIST</h6>
+                <h6 class="mb-4">PATIENT LIST {% if today%}<span class="float-right m-r-5">
+                    <a href="{% url 'docter:myPatient' %}">All</a></span>
+                    {%else%}<span  class="float-right m-r-5"><a href="{% url 'docter:today_Patient' %}">
+                        TODAY</a></span>{%endif%}</h6>
                 <div class="table-responsive">
                     <table class="table">
                         <thead>

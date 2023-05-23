@@ -7,9 +7,12 @@ from .forms import doc_form
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta,time
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Case, When, Value, IntegerField
+from django.views.decorators.cache import cache_control
+
 
 # Create your views here.
 @login_required(login_url='home:signin')
@@ -28,20 +31,20 @@ def doc_dashboard(request):
                 docter=DoctorProfile(user_id=request.user.id)
                 docter.save()
                 docter=DoctorProfile.objects.filter(user_id=request.user.id)
-                context={'docter':docter,'Pr_no':Pr_no,'My_no':My_no,'P_no':P_no,'AP_no':AP_no}
+                context={'docter':docter,'Pr_no':Pr_no,'My_no':My_no,'P_no':P_no,'AP_no':AP_no ,'page':'dash'}
                 return render(request,'doc_home.html',context)
             
             if docter.image !=None and docter.badge_id !=None:
                 print('iam home doc') 
-                context={'docter':docter,'Pr_no':Pr_no,'My_no':My_no,'P_no':P_no,'AP_no':AP_no}
+                context={'docter':docter,'Pr_no':Pr_no,'My_no':My_no,'P_no':P_no,'AP_no':AP_no,'page':'dash'}
                 return render(request,'doc_home.html',context)
             
             if docter.image == None or docter.badge_id == None:
                 print('iam home doc') 
-                context={'docter':docter,'Pr_no':Pr_no,'My_no':My_no,'P_no':P_no,'AP_no':AP_no}
+                context={'docter':docter,'Pr_no':Pr_no,'My_no':My_no,'P_no':P_no,'AP_no':AP_no,'page':'dash'}
                 return render(request,'doc_home.html',context)
             
-            context={'docter':docter,'Pr_no':Pr_no,'My_no':My_no,'P_no':P_no,'AP_no':AP_no}
+            context={'docter':docter,'Pr_no':Pr_no,'My_no':My_no,'P_no':P_no,'AP_no':AP_no,'page':'dash'}
             return render(request,'doc.html',context)
              
         return redirect('signin')      
@@ -77,7 +80,7 @@ def doc_profile(request):
     else:
         docter=DoctorProfile.objects.get(user_id=request.user.id)
         form=doc_form()
-        return render(request,'doc_profile.html',{'form':form,'docter':docter})
+        return render(request,'doc_profile.html',{'form':form,'docter':docter,'page':'dash'})
 
 @login_required(login_url='home:signin')
 def doc_edit_profile(request):
@@ -110,7 +113,7 @@ def doc_edit_profile(request):
     else:
         profile=DoctorProfile.objects.get(user_id=request.user.id)
         form=doc_form(instance=profile)
-        return render(request,'doc_profile.html',{'form':form,'docter':profile})    
+        return render(request,'doc_profile.html',{'form':form,'docter':profile,'page':'dash'})    
     
 @login_required(login_url='home:signin')
 def doc_Product(request):
@@ -118,20 +121,68 @@ def doc_Product(request):
       product=Product.objects.prefetch_related(Prefetch('item',queryset=varient.objects.all()))
       docter=DoctorProfile.objects.get(user_id=request.user.id)
       print(docter)
-      context={'product':product,'docter':docter} 
+      context={'product':product,'docter':docter,'page':'medicine'} 
       return render(request,'doc_Product.html',context)
+
+
+def doc_time_options():
+    times = []
+    for hour in range(0, 24):
+        for minute in range(0, 60, 15):  
+            time_obj = time(hour, minute)
+            time_str = time_obj.strftime('%H:%M')
+            times.append((time_str, time_str))
+    return times
+
+
 
 @login_required(login_url='home:signin')
 def doc_appointment(request):
-
+    today=datetime.now().date()
     doct=DoctorProfile.objects.get(user=request.user)
     print(doct.id)
-    Patient_list=Appointment.objects.filter(docter_id=doct.id)
+    Patient_list=Appointment.objects.filter(docter_id=doct.id).order_by(
+        Case(
+        When(appointment_date__gt=today, then=Value(2)),
+        When(appointment_date=today, then=Value(1)),
+        default=Value(3),
+        output_field=IntegerField(),
+    ),
+    Case(
+        When(status='pending', then=Value(1)),
+        When(status='accept', then=Value(2)),
+        When(status='reject', then=Value(3)),
+        When(status='finish', then=Value(4)),
+        default=Value(5),
+        output_field=IntegerField(),
+    ),
+        'appointment_date')
     print(Patient_list)
     docter=DoctorProfile.objects.get(user_id=request.user.id)
-    context={'Appointment':Patient_list,'docter':docter}
+    context={'Appointment':Patient_list,'docter':docter,'page':'appoiment'}
     return render(request,'doc_appointment.html',context)
 
+@login_required(login_url='home:signin')
+def changeTime(request):
+    if request.method == 'POST':
+        start=request.POST.get('start_time')
+        end=request.POST.get('end_time')
+        start_time = datetime.strptime(start, "%H:%M").time()
+        end_time = datetime.strptime(end, "%H:%M").time()
+        doc = DoctorProfile.objects.get(user=request.user)
+        doc.consult_start = start_time
+        doc.consult_end = end_time
+        doc.save()
+        print(doc.consult_start,doc.consult_end)
+        print(type(doc.consult_start))
+        return redirect('docter:doc_appointment')
+    else:
+        docter = DoctorProfile.objects.get(user=request.user)
+        time_options =doc_time_options()
+        context={'docter':docter,'start':time_options,'end':time_options,'page':'time'}
+        return render(request,'doc_time.html',context)
+        
+@login_required(login_url='home:signin')
 @csrf_exempt
 def update_is_available(request):
     if request.method=='POST':
@@ -154,15 +205,17 @@ def update_is_available(request):
 
 
 
-
+@login_required(login_url='home:signin')
 def today_appointment(request):
     today=datetime.now().date()
     doct=DoctorProfile.objects.get(user=request.user)
-    Patient_list=Appointment.objects.filter(docter_id=doct.id,appointment_date=today)
+    Patient_list=Appointment.objects.filter(docter_id=doct.id,appointment_date=today).order_by('appointment_time')
     docter=DoctorProfile.objects.filter(user_id=request.user.id)
-    context={'Appointment':Patient_list,'docter':docter,'today':today}
+    context={'Appointment':Patient_list,'docter':doct,'today':today,'page':'appoiment'}
     return render(request,'doc_appointment.html',context)
 
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required(login_url='home:signin')
 def accept(request,id):
     try:
@@ -175,7 +228,7 @@ def accept(request,id):
     except:
        return redirect('docter:doc_appointment')
 
-    
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
 @login_required(login_url='home:signin')
 def reject(request,id):
     appoiment=Appointment.objects.get(id=id)
@@ -185,6 +238,7 @@ def reject(request,id):
         return redirect('docter:doc_appointment')
     return redirect('docter:doc_appointment')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required(login_url='home:signin')    
 def finish(request,id):
     appoiment=Appointment.objects.get(id=id)
@@ -195,6 +249,7 @@ def finish(request,id):
         return redirect('docter:prescribe',id)
     return redirect('docter:doc_appointment')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required(login_url='home:signin')    
 def prescribe(request,id):
     id=id
@@ -217,22 +272,32 @@ def prescribe(request,id):
         return redirect('docter:pre2',tret.id)
     else:
         docter=DoctorProfile.objects.get(user_id=request.user.id)
-        context={'medicines':varient.objects.all(),'id':id ,'docter':docter}
+        context={'medicines':varient.objects.all(),'id':id ,'docter':docter,'page':'appoiment'}
         return render(request,'prescribe.html',context)
     
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
 @login_required(login_url='home:signin')    
 def pre2(request,id):
      list=TreatMedicine.objects.filter(Treatment_id=id)
      docter=DoctorProfile.objects.get(user_id=request.user.id)
 
-     return render(request,'prescb2.html',{'list':list,'docter':docter})
+     return render(request,'prescb2.html',{'list':list,'docter':docter,'page':'appoiment'})
 
 
 @login_required(login_url='home:signin')    
 def myPatient(request):
     docter=DoctorProfile.objects.get(user_id=request.user.id)
     Patients=Appointment.objects.filter(docter__user_id=request.user.id , status='finish')
-    context={'Patients':Patients,'docter':docter}
+    context={'Patients':Patients,'docter':docter,'page':'Patient'}
+    return render(request,'myPatient.html',context)
+
+
+@login_required(login_url='home:signin')    
+def today_Patient(request):
+    today=datetime.now().date()
+    docter=DoctorProfile.objects.get(user_id=request.user.id)
+    Patients=Appointment.objects.filter(docter__user_id=request.user.id , status='finish',appointment_date=today)
+    context={'Patients':Patients,'docter':docter,'today':today,'page':'Patient'}
     return render(request,'myPatient.html',context)
 
 
@@ -251,7 +316,7 @@ def doc_chat(request):
     # return render(request,'pat_chat.html',{'pat':Patient_list})
     user=str(request.user.id)
     docter=DoctorProfile.objects.get(user_id=request.user.id)
-    return render(request,'doc_chat.html',{'pat':filtered_list,'docter':docter})
+    return render(request,'doc_chat.html',{'pat':filtered_list,'docter':docter,'page':'chat'})
     # return HttpResponseRedirect(reverse('home:room', args=[user]))
     # return redirect('room',user)
 
@@ -270,9 +335,10 @@ def msgg(request,id):
                 added_doctors.append(doctor)
 
         docter=DoctorProfile.objects.get(user_id=request.user.id)
-        context={'pat':filtered_list,'id':id,'Person':Person,'username':request.user.username,'docter':docter}        
+        context={'pat':filtered_list,'id':id,'Person':Person,'username':request.user.username,'docter':docter,'page':'chat'}        
         return render(request,'msg2.html',context)
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required(login_url='home:signin')    
 def decr(request,id):
     item=TreatMedicine.objects.get(id=id)
@@ -282,6 +348,8 @@ def decr(request,id):
     tem=item.Treatment_id    
     return redirect('docter:pre2',tem)
 
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required(login_url='home:signin')    
 def incr(request,id):
     item=TreatMedicine.objects.get(id=id)

@@ -43,7 +43,7 @@ urlpatterns = [
     path('refund/<int:id>',views.refund,name='refund'),
     path('p_profile',views.p_profile,name='p_profile'),
     path('ord_success/',views.ord_success,name='ord_success'),
-    path('pay_cancel/<int:id>',views.pay_cancel,name='pay_cancel'),
+    path('pay_cancel/<int:id>/<int:item>',views.pay_cancel,name='pay_cancel'),
     path('delet_coupen/<int:id>',views.delete_coupen,name='delet_coupen'),
 
    

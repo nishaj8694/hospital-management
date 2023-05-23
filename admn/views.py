@@ -858,13 +858,24 @@ def refundstatus(request):
             if ord.refund_option=='wallet':
                 try:
                     user=patientProfile.objects.get(user_id=ref.user_id)
+                    print('user',user)
                     wal=wallet.objects.get(PatientProfile=user)
-                    wal.amount+=ref.Total_Price   
+                    print('us1',wal)
+                    print('us1',)
+                    if wal.amount==None:
+                        wal.amount=0 
+                    wal.amount+=ref.Total_Price
+                    print('us1',wal)
                     wal.save()
+                    print('us1',wal)
                     ord.refund_amount=ref.Total_Price
+                    print('us1',wal)
                     ord.status='completed'
                     ord.save()     
+                    print('us1',wal)
+
                 except:
+                    print('waltet nit ')
                     return JsonResponse({'success':False})
             else:
                ord.refund_amount=ref.Total_Price

@@ -315,6 +315,7 @@
                                     <label for="online">Online Payment</label><br>
                                     <input type="radio" name="payment" id="wallet" value="wallet" {% if cart_itm|totalprice:request.session.coupen > walt %} disabled {%endif%} required>
                                     <label for="wallet">wallet</label> 
+                                    {{walt}}
                                     <div class="checkout__order__widget">
                                         <!-- <label for="o-acc">
                                             Create an acount?

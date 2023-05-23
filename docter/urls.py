@@ -33,11 +33,13 @@ urlpatterns = [
  path('finish/<int:id>',views.finish,name='finish'),
  path('priscribe/<int:id>',views.prescribe,name='prescribe'),
  path('myPatient',views.myPatient,name='myPatient'),
+ path('today_Patient',views.today_Patient,name='today_Patient'),
  path('doc_chat',views.doc_chat,name='doc_chat'),
  path('msgg/<int:id>',views.msgg,name='msgg'),
  path('decr/<int:id>',views.decr,name='decr'),
  path('incr/<int:id>',views.incr,name='incr'),
  path('pre2/<int:id>',views.pre2,name='pre2'),
+ path('changeTime',views.changeTime,name='changeTime'),
  
 
 

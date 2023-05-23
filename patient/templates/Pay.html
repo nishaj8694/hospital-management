@@ -37,14 +37,14 @@
 {% endfor %}
 {%endif%} 
     <div class="card p-5 m-5 bg-body" style="width: 18rem;">
-       <h3 class="text-center">Payment</h3>
+       <h3 class="text-center text-dark">Payment</h3>
        <div class="my-3">
-          <h5 class="d-inline">order ID<span class="float-right mr-2">{{order.id}}</span></h5>
-          <h5 class="d-inline">Payment ID<span class="float-right mr-2">{{order.razor_orderid}}</span></h5>  
-          <h5 class="d-inline">Amount<span class="float-right mr-2">{{order.Total_Price}}</span></h5> 
+          <h5 class="d-inline text-dark">order ID<span class="float-right mr-2">{{order.id}}</span></h5><br>
+          <h5 class="d-inline text-dark">Payment ID<span class="float-right mr-2">{{order.razor_orderid}}</span></h5> <br> 
+          <h5 class="d-inline text-dark">Amount<span class="float-right mr-2">{{order.Total_Price}}</span></h5> 
        </div>
        <button class="btn bg-body my-3" id="rzp-button2">Pay</button>
-       <a href="{% url 'patient:pay_cancel' order.id %}" class="btn btn-danger">Cancel</a>
+       <a href="{% url 'patient:pay_cancel' order.id treat %}" class="btn btn-danger">Cancel</a>
     </div>
 
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script> 
@@ -59,7 +59,7 @@
        "order_id": "{{payment.id}}", 
        "handler": function (response){
            
-           window.location.href='http://127.0.0.1:8000/Patient/ord_success/?razororder={{payment.id}}'
+           window.location.href='/Patient/ord_success/?razororder={{payment.id}}'
        },
        "prefill": {
            "name": "{{request.user.name}}",
@@ -75,13 +75,7 @@
    };
    var rzp1 = new Razorpay(options);
    rzp1.on('payment.failed', function (response){
-           alert(response.error.code);
-           alert(response.error.description);
-           alert(response.error.source);
-           alert(response.error.step);
-           alert(response.error.reason);
-           alert(response.error.metadata.order_id);
-           alert(response.error.metadata.payment_id);
+    window.location.href='/Patient/pay_cancel/?id={{order.id}}/item={{treat}}'
    });
    document.getElementById('rzp-button2').onclick = function(e){
        rzp1.open();

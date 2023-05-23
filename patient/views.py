@@ -104,6 +104,7 @@ def Pat_signup(request):
         crt=Cart.objects.create(user=user)
         profile=patientProfile.objects.create(user=user)
         walt=wallet.objects.create(PatientProfile=profile)
+        walt.amount=0
         walt.save()
         profile.save()
         crt.save()
@@ -155,14 +156,30 @@ def get_available_time_slots(request):
         selected_date = request.GET.get('date')
         doc=request.GET.get('doctor')
         print('hallo',doc)
-        start_time = datetime(2023, 4, 18, 14, 0) 
-        end_time = datetime(2023, 4, 18, 20, 0)  
+        docte=Appointment.objects.filter(docter_id=doc).distinct('docter').values('docter')
+        doc1=DoctorProfile.objects.get(id=int(doc))
+        start = doc1.consult_start
+        end = doc1.consult_end
+        print(start,end)
+        start_minutes = start.hour * 60 + start.minute
+        end_minutes = end.hour * 60 + end.minute
+        dif_time=end_minutes-start_minutes
         time_slot_interval = 30 
-
-        total_time_slots = int((end_time - start_time).seconds / (time_slot_interval * 60))
+        total_time_slots=dif_time//time_slot_interval
+        # total_slots = int(time_diff.total_seconds() / (time_slot_interval * 60))
+        # start_time = datetime(2023, 4, 18, 14, 0) 
+        # end_time = datetime(2023, 4, 18, 20, 0)  
+        # total_time_slots = int((end_time - start_time).seconds / (time_slot_interval * 60))
+        # print(total_time_slots)
+        current_date = datetime.now().date()
+        star = datetime.combine(current_date, datetime.min.time()) + timedelta(hours=doc1.consult_start.hour, minutes=doc1.consult_start.minute)
+        print(star)
+        if datetime.now() > star + timedelta(minutes=dif_time):
+            star += timedelta(days=1)
         available_time_slots = []
         for i in range(total_time_slots):
-            time_slot = start_time + timedelta(minutes=i * time_slot_interval)
+            time_slot = star + timedelta(minutes=i * time_slot_interval)
+            print(time_slot)
             if not Appointment.objects.filter(docter_id=doc,appointment_date=selected_date, appointment_time=time_slot).exists():
                 available_time_slots.append(time_slot.strftime("%H:%M")) 
                 
@@ -306,6 +323,13 @@ def d_order(request,id):
             subject.stock=int(subject.stock)- int(i.quantity)
             subject.save()
         
+        if request.session.has_key('coupen'):
+            id=int(request.session['coupen'])
+            cp=coupen.objects.get(id=id)
+            sum=sum-cp.discount_price
+            ord.discount=cp
+
+
         
         ord.Total_Price=sum
         ord.address_id=address
@@ -320,7 +344,7 @@ def d_order(request,id):
             raz_client=razorpay.Client(auth=(settings.RAZORPAY_API_KEY,settings.RAZORPAY_SECRET_KEY))
             payment=raz_client.order.create({'amount': int(s)*100, 'currency': 'INR', 'payment_capture': '1'})  
             ord.razor_orderid=payment['id']
-            context={'payment':payment,'order':ord}
+            context={'payment':payment,'order':ord,'treat':trt.id}
             return render(request,'Pay.html',context)
         elif pay=='wallet':
             try:          
@@ -350,14 +374,18 @@ def ord_success(request):
     except:
         messages.error(request,'Your order is canceled try againe')
         return redirect('patient:Pat_dashboard')
-def pay_cancel(request,id):
+    
+def pay_cancel(request,id,item):
     order=Order.objects.get(id=id)
     items=orderItem.objects.filter(order_id=order.id)
     for i in items:
         subject=varient.objects.get(id=i.Varient_id)
         subject.stock=int(subject.stock) + int(i.quantity)
         subject.save()    
-
+    treat=treatment.objects.get(id=item)
+    if treat:
+        treat.ordstatus=False
+        treat.save()
     order.delete()
     messages.success(request, " Your  order item is canceled")
     return redirect('patient:Pat_dashboard')

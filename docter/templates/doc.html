@@ -51,7 +51,7 @@
         </div>
         <ul class="sidebar-menu do-nicescrol">
           <li class="sidebar-header">MAIN NAVIGATION</li>
-          <li class="">
+          <li class="nav-link {%if page == 'dash' %} active{%endif%}">
             <a href="{% url 'docter:doc_dashboard'%}">
             <i class="zmdi zmdi-view-dashboard"></i> <span>Dashboard</span>
             </a>
@@ -65,24 +65,29 @@
             </a>
           </li> -->
           
-          <li>
+          <li class="nav-link {%if page == 'appoiment' %} active{%endif%}">
             <a href="{% url 'docter:doc_appointment' %}">
-              <i class="zmdi zmdi-format-list-bulleted"></i> <span>My Appointent</span>
+              <i class="zmdi zmdi-format-list-bulleted"></i> <span>Appointent List</span>
             </a>
           </li>
 
-          <li>
+          <li class="nav-link {%if page == 'medicine' %} active{%endif%}">
             <a href="{% url 'docter:docno' %}" >
-              <i class="zmdi zmdi-format-list-bulleted"></i> <span>medicine</span>
+              <i class="zmdi zmdi-format-list-bulleted"></i> <span>Medicine List</span>
             </a>
           </li>
            
-          <li>
+          <li class="nav-link {%if page == 'Patient' %} active{%endif%}">
             <a href="{% url 'docter:myPatient'%}"> 
-              <i class="zmdi zmdi-format-list-bulleted"></i> <span>Patient</span>
+              <i class="zmdi zmdi-format-list-bulleted"></i> <span>Patient List</span>
             </a>
           </li>
-          <li>
+          <li class="nav-link {%if page == 'time' %} active{%endif%}">
+            <a href="{% url 'docter:changeTime'%}"> 
+              <i class="zmdi zmdi-format-list-bulleted"></i> <span>Consult Time</span>
+            </a>
+          </li>
+          <li class="nav-link {%if page == 'chat' %} active{%endif%}">
             <a href="{% url 'docter:doc_chat'%}"> 
               <i class="zmdi zmdi-format-list-bulleted"></i> <span>Chat</span>
             </a>

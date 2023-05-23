@@ -2,8 +2,8 @@
 
 {%block 'content'%}
 <div class="container">
-    <div class="row">
-        <div class="col-12">          
+    <div class="row d-flex justify-content-center align-items-center mt-5">
+        <div class="col-lg-6 col-md-6 col-sm-10 col-xs-12">          
             <div class="table-responsive">
                 <table class="table table-striped table-hover align-middle ">
                     <thead class="table-success">
@@ -78,7 +78,7 @@
          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body ">
-         <input type="hidden" name="dele" id="unblock_id"  value="">
+          <input type="hidden" name="dele" id="unblock_id"  value="">
           <h6 class="text-center">Are you want to block user</h6>
       </div>
       <div class="modal-footer">
@@ -124,6 +124,18 @@ $(document).ready(function(){
         $('#block_id').val(id);
         $('#deleteModal1').modal('show');
     });
+    $('.unblockperson').click(function(e){
+            e.preventDefault();
+
+            var id = $(this).attr("value");
+            console.log(id);
+            console.log("hii")
+
+            // id = $(".delete-button").attr("value");
+
+            $('#unblock_id').val(id);
+            $('#deleteModal2').modal('show');
+        });
     $('.userdel').click(function(e){
         e.preventDefault();
 
