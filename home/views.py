@@ -363,12 +363,16 @@ def verify_otp(request):
                 return redirect('home:signin')    
         else:
             return render(request, 'verify_otp.html')
-
+        
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url='home:signin')
 def cart(request):
     cart_itm=CartItem.objects.filter(cart__user=request.user)
     context={'cart_itm':cart_itm}
     return render(request,'shop-cart.html',context)
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url='home:signin')
 def decr(request,id):
     item=CartItem.objects.get(id=id)
     if  item.quantity >1:
@@ -376,6 +380,8 @@ def decr(request,id):
         item.save()
 
     return redirect('home:cart')
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url='home:signin')
 def incr(request,id):
     item=CartItem.objects.get(id=id)
     item.quantity=item.quantity+1
@@ -453,6 +459,7 @@ def checkout(request):
     return render(request,'checkout.html',context)
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url='home:signin')
 def order(request,item):
     if request.method == 'POST':
         address=request.POST.get('address')
@@ -526,7 +533,9 @@ def order(request,item):
             return redirect('home:item')
     else:
         return redirect('home:checkout')
-
+    
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url='home:signin')
 def payment_cancel(request,id):
     order=Order.objects.get(id=id)
     items=orderItem.objects.filter(order_id=order.id)
@@ -557,7 +566,8 @@ def success(request):
         messages.error(request,'Your order is canceled try againe')
         return redirect('home:item') 
         
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url='home:signin')
 def coup(request):
     if request.method=='POST':
         coupon=request.POST.get('coupon')
@@ -587,7 +597,9 @@ def coup(request):
         except:
             print('else')
             return redirect('home:checkout')
-        
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url='home:signin')        
 def delete_session(request,id):
     if request.session.has_key('coupen'):
         del request.session['coupen']
@@ -598,7 +610,8 @@ def delete_session(request,id):
         return redirect('home:checkout')
         
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url='home:signin')
 def adres(request):
     if request.method =='POST':
         name=request.POST.get('name')
@@ -626,8 +639,10 @@ def adres(request):
             messages.error(request, "Your Profile is not completed")
             return redirect('home:checkout')
     else:
-        return render(request,'adress.html')    
-
+        return render(request,'adress.html')
+        
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url='home:signin')
 def edit_address(request,id):
     if request.method =='POST':
         name=request.POST.get('name')
@@ -665,8 +680,10 @@ def edit_address(request,id):
     else:
         instance=Address.objects.get(id=id)
         context={'instance':instance,'id':id}
-        return render(request,'edit_address.html',context)    
-
+        return render(request,'edit_address.html',context)
+        
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url='home:signin')
 def delete_address(request):
     if request.method=='POST':
         id=request.POST['dele']

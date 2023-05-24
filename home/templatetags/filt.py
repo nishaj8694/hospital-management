@@ -37,7 +37,15 @@ def totalprice(item,prom):
         return stotal
     else:    
         return stotal
-    
+
+@register.filter(name='totprice')
+def totalprice(item):
+    stotal=0
+    for i in item:
+        stotal+=i.quantity*i.price
+        
+    return stotal    
+
 @register.filter(name='discount')
 def discount(prom):
     id=int(prom)

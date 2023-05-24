@@ -5,8 +5,7 @@ from django.forms import ModelForm
 class doc_form(forms.ModelForm):
     class Meta:
         model=DoctorProfile
-        # fields='__all__'
-        exclude=['user','email_vr','is_varified','is_available']
+        exclude=['user','email_verify','is_verify','is_available','consult_start','consult_end']
 
 
 class department_form(forms.ModelForm):

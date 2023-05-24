@@ -76,26 +76,26 @@ def Pat_signup(request):
 
         if fullname == '' and username == '' and password == '' and email =='':
             messages.error(request, "Fields can't be blank")
-            return redirect('Pat_signup')
+            return redirect('patient:Pat_signup')
 
         if password != comf_password:
             messages.error(request, "Password dosen't match")
-            return redirect('Pat_signup')
+            return redirect('patient:Pat_signup')
 
         if User.objects.filter(username=username).exists():
             messages.error(request, 'Username already exists')
-            return redirect('Pat_signup')
+            return redirect('patient:Pat_signup')
         
         if User.objects.filter(email=email).exists():
             messages.error(request, 'Requested email already exists')
-            return redirect('Pat_signup')
+            return redirect('patient:Pat_signup')
 
         try:
             validate_password(password)
 
         except ValidationError as e:
             messages.error(request, e)
-            return redirect('Pat_signup')
+            return redirect('patient:Pat_signup')
         
         user = User.objects.create_user(username=username, password=password)
         user.first_name = fullname
@@ -111,11 +111,11 @@ def Pat_signup(request):
         user.save()
 
         messages.success(request, 'User created successfully')
-        return redirect('signin')
+        return redirect('home:signin')
 
     return render(request, 'new-user.html')
       
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def appoiment(request,id):
     id=id
     if request.method=='POST':
@@ -187,7 +187,9 @@ def get_available_time_slots(request):
             'time_slots': available_time_slots
         }
         return JsonResponse(data)
-
+    
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url='home:signin')
 def Patient_appointment(request):
     try:
         Patient=patientProfile.objects.get(user=request.user.id)
@@ -197,7 +199,9 @@ def Patient_appointment(request):
         return render(request,'Patient_appointment.html',context)
     except:
         return render(request,'Patient_appointment.html')
-
+    
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url='home:signin')
 def copn(request,id):
     if request.method=='POST':
         coupon=request.POST.get('coupon')
@@ -231,13 +235,15 @@ def copn(request,id):
             print('else')
             return redirect('home:check',id)
 
-
-@login_required(login_url='signin')
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url=('home:signin'))
 def treat(request):
     Patient_list=Appointment.objects.filter(patient__user_id=request.user.id)
     # print(Patient_list)
     list=treatment.objects.prefetch_related(Prefetch('treat',queryset=TreatMedicine.objects.all())).filter(appointment__patient__user=request.user)
     return render(request,'prescrption.html',{'list':list,'page':"med"})
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def Pat_dashboard(request):
     if request.user.is_authenticated:
         if request.user.is_patient:
@@ -251,6 +257,8 @@ def Pat_dashboard(request):
        
     return redirect('signin')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url=('home:signin'))
 def p_profile(request):
     if request.method=='POST':
         form=patient_form(request.POST,request.FILES)
@@ -278,7 +286,8 @@ def p_profile(request):
             messages.error(request,'no user is found')
             return render(request,'Patient_Profile.html',{'form':form})
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url=('home:signin'))
 def check(request,id):
     print('hii')
     list=TreatMedicine.objects.filter(Treatment_id=id)
@@ -294,13 +303,17 @@ def check(request,id):
     context={'list':list,'adress':adress,'money':sum,'id':id ,'walt':walt.amount}
     return render(request,'check.html',context)
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url=('home:signin'))
 def delete_coupen(request,id):
     if request.session.has_key('coupen'):
         del request.session['coupen'] 
         return redirect('patient:check',id)
     else:
-        return redirect('patient:check',id) 
-
+        return redirect('patient:check',id)
+     
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url=('home:signin'))
 def d_order(request,id):     
     if request.method =='POST':
         address=request.POST.get('address')
@@ -363,7 +376,8 @@ def d_order(request,id):
     else:
         return redirect('patient:check',id)
             
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url=('home:signin'))
 def ord_success(request):
     id=request.GET.get('razororder')
     try:
@@ -375,6 +389,8 @@ def ord_success(request):
         messages.error(request,'Your order is canceled try againe')
         return redirect('patient:Pat_dashboard')
     
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url=('home:signin'))    
 def pay_cancel(request,id,item):
     order=Order.objects.get(id=id)
     items=orderItem.objects.filter(order_id=order.id)
@@ -390,6 +406,8 @@ def pay_cancel(request,id,item):
     messages.success(request, " Your  order item is canceled")
     return redirect('patient:Pat_dashboard')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url=('home:signin'))
 def pat_chat(request):
     Patient_list=Appointment.objects.filter(patient__user_id=request.user.id,status='finish')
     added_doctors=[]
@@ -403,6 +421,8 @@ def pat_chat(request):
     print(filtered_list) 
     return render(request,'pat_chat.html',{'pat':filtered_list,'page':'chat'})
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url=('home:signin'))
 def adres(request,id):
     if request.method=='POST':
         form=adrs_form(request.POST)
@@ -426,6 +446,8 @@ def adres(request,id):
         form=adrs_form()
         return render(request, 'address.html',{'form':form,'id':id})
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url=('home:signin'))
 def edit_adres(request,id,item):
     if request.method=='POST':
         form=adrs_form(request.POST)
@@ -454,18 +476,26 @@ def edit_adres(request,id,item):
         thing=Address.objects.get(id=id)
         form=adrs_form(instance=thing)
         return render(request, 'ed_address.html',{'form':form,'id':id,'item':item})
-          
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url=('home:signin'))          
 def delete_adres(request,id,item):
     thing=Address.objects.get(id=id) 
     if thing:
         thing.delete()
-        return redirect('patient:check',item) 
+        return redirect('patient:check',item)
+    
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url=('home:signin'))     
 def pat_chat_con(request,id):
     usr=DoctorProfile.objects.filter(id=id).first()
     person=str(usr.user_id)
     # return render(request,'user-admin.html')
     return HttpResponseRedirect(reverse('home:room', args=[person]))
 
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url=('home:signin'))
 def msgg(request,id):
     Person=Appointment.objects.get(id=id)
     id=str(id)
@@ -484,7 +514,8 @@ def msgg(request,id):
     context={'id':id,'pat':filtered_list,'Person':Person,'username':request.user.username,'page':'chat'}        
     return render(request,'msg1.html',context)
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url=('home:signin'))
 def ord(request):
     order_list=Order.objects.prefetch_related(Prefetch('order_items',queryset=orderItem.objects.all()) ,Prefetch('order_refund',queryset=Refund.objects.all())).filter(user=request.user).exclude(status='deliverd')
     context={'order_list':order_list ,'page':'order'}
@@ -496,6 +527,9 @@ def ord_hys(request):
             Prefetch('order_refund',queryset=Refund.objects.all())).filter(user=request.user , delivery_date__isnull=False,status__in=stat)
     context={'order_list':order_list,'page':'order'}
     return render(request,'myorder_hs.html',context)
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url=('home:signin'))
 def cancel_order(request):
     if request.method=='POST':
         id=request.POST.get('dele')
@@ -516,8 +550,10 @@ def cancel_order(request):
                 return render(request,'refund.html',{'id':id,'form':form})
         except:
             messages.error(request,"order can't delete try againe")
-            return redirect('patient:ord')    
-       
+            return redirect('patient:ord')
+            
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url=('home:signin'))       
 def refund(request,id):
     if request.method=='POST':
         form=refund_form(request.POST)
@@ -536,6 +572,7 @@ def refund(request,id):
 
             if order.status =='deliverd' or 'cancel' and order.delivery_date!=None:
                 order.status='cancel'
+                order.cancel_date=datetime.now()
                 order.save()
                 if adr.cancelby == '':
                     adr.cancelby='user'
@@ -555,7 +592,7 @@ def refund(request,id):
             return redirect('patient:refund',id)
 
 
-
+@login_required(login_url=('home:signin'))
 def invoice(request,id):
     order=Order.objects.get(id=id)
     item=orderItem.objects.filter(order=order)

@@ -36,7 +36,7 @@
                                 <td>{{order.Total_Price}}</td>
                                 <td>{{order.Pay_option}}</td>
                                 <td id="act{{order.id}}">
-                                   {% if order.status != "cancel"%}
+                                   {% if order.status != "cancel" and order.status != "deliverd"%}
                                        <div class="btn bg-body border border-info">Ordered Action
 
                                                 <select class="order-select btn btn-light mx-1 border border-black" id="ord_status_{{order.id}}" val="{{order.id}}">
@@ -47,8 +47,8 @@
                                                                 <option>deliverd</option>
                                                                 <option>revoke</option>   
                                                     {% elif order.status == "shiped"%}
-                                                                <option>pending</option>
                                                                 <option>shiped</option>
+                                                                <option>pending</option>
                                                                 <option>deliverd</option>
                                                                 <option>revoke</option>
                                                     {%endif%}          

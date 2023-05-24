@@ -173,8 +173,6 @@ def changeTime(request):
         doc.consult_start = start_time
         doc.consult_end = end_time
         doc.save()
-        print(doc.consult_start,doc.consult_end)
-        print(type(doc.consult_start))
         return redirect('docter:doc_appointment')
     else:
         docter = DoctorProfile.objects.get(user=request.user)
@@ -258,6 +256,8 @@ def prescribe(request,id):
         medicines_id = request.POST.getlist('av1') 
         # print(medicines_id)
         # print(qt)
+        if symtems == '' and medicines_id == '':
+            return redirect('docter:prescribe',id)
         tret = treatment(appointment_id=id, symtems=symtems)
         tret.save()
         print('its not ',tret.id)
@@ -280,7 +280,6 @@ def prescribe(request,id):
 def pre2(request,id):
      list=TreatMedicine.objects.filter(Treatment_id=id)
      docter=DoctorProfile.objects.get(user_id=request.user.id)
-
      return render(request,'prescb2.html',{'list':list,'docter':docter,'page':'appoiment'})
 
 

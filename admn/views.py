@@ -837,7 +837,7 @@ def medicine_type_edit(request,id):
 
 def admin_order(request):
     order_list=Order.objects.prefetch_related(Prefetch('order_items',queryset=orderItem.objects.all())
-                            ,Prefetch('order_refund',queryset=Refund.objects.all())).exclude(status='deliverd' or 'cancel')
+                            ,Prefetch('order_refund',queryset=Refund.objects.all())).exclude(status='deliverd' or 'cancel', cancel_date=None)
     context={'order_list':order_list ,'page':'admn-ord'}
     return render(request,'adminorder.html',context)
 
@@ -857,25 +857,20 @@ def refundstatus(request):
            if ref:
             if ord.refund_option=='wallet':
                 try:
+                    if ref.delivery_date!=None:
+                        ref.delivery_date=None
+                        ref.cancel_date=None
                     user=patientProfile.objects.get(user_id=ref.user_id)
-                    print('user',user)
                     wal=wallet.objects.get(PatientProfile=user)
-                    print('us1',wal)
-                    print('us1',)
                     if wal.amount==None:
                         wal.amount=0 
                     wal.amount+=ref.Total_Price
-                    print('us1',wal)
                     wal.save()
-                    print('us1',wal)
                     ord.refund_amount=ref.Total_Price
-                    print('us1',wal)
                     ord.status='completed'
-                    ord.save()     
-                    print('us1',wal)
-
+                    ord.save() 
+                    ref.save()    
                 except:
-                    print('waltet nit ')
                     return JsonResponse({'success':False})
             else:
                ord.refund_amount=ref.Total_Price
@@ -887,12 +882,19 @@ def refundstatus(request):
         elif status =='cancel':
             try:
               itm=Order.objects.get(id=ord.order_id)
-              itm.status='pending'
-              itm.delivery_date=None
-              itm.cancel_date=None
-              itm.save()
-              ord.delete()
-              return JsonResponse({'success':True})
+              if itm.delivery_date !=None:
+                    itm.status='deliverd'
+                    itm.cancel_date=None
+                    itm.save()
+                    ord.delete()
+                    return JsonResponse({'success':True})
+              else:    
+                    itm.status='pending'
+                    itm.delivery_date=None
+                    itm.cancel_date=None
+                    itm.save()
+                    ord.delete()
+                    return JsonResponse({'success':True})
 
             except:
 

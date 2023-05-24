@@ -7,8 +7,8 @@
     <title> Hospital Management</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="manifest" href="site.webmanifest">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <!-- <link rel="manifest" href="site.webmanifest"> -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.ico' %}">
 
 	<!-- CSS here -->
 	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
@@ -63,7 +63,7 @@
                                         <li><a href="{% url 'home:docter' %}">Doctors</a></li>
                                         <li><a href="{% url 'home:department' %}">Department</a></li>
                                         <li><a href="{% url 'home:about' %}">About</a>
-                                        <li><a href="{% url 'home:contact' %}">Contact</a></li>
+                                        <li><a href="{% url 'home:contact' %}">ContactI</a></li>
                                         {% if request.user.is_authenticated %}
                                             <li><i class="bi bi-person-check" style="font-size: 2rem; "></i>
                                                 <ul class="submenu">
@@ -159,13 +159,13 @@
                         </div>
                         <p>There arge many variations ohf pacgssages of sorem gpsum ilable, but the majority have suffered alteration in some form, by ected humour, or randomised words whi.</p>
                         <div class="about-btn1 mb-30">
-                            <a href="about.html" class="btn about-btn">Find Doctors .<i class="ti-arrow-right"></i></a>
+                            <a href="#" class="btn about-btn">Find Doctors .<i class="ti-arrow-right"></i></a>
                         </div>
                         <div class="about-btn1 mb-30">
-                            <a href="about.html" class="btn about-btn2">Appointment <i class="ti-arrow-right"></i></a>
+                            <a href="#" class="btn about-btn2">Appointment <i class="ti-arrow-right"></i></a>
                         </div>
                         <div class="about-btn1 mb-30">
-                            <a href="about.html" class="btn about-btn2">Emargency 1 <i class="ti-arrow-right"></i></a>
+                            <a href="#" class="btn about-btn2">Emargency 1 <i class="ti-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -189,7 +189,7 @@
         <div class="container">
             <!-- Section Tittle -->
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-12">0
                     <div class="section-tittle text-center mb-100">
                         <span>Our Departments</span>
                         <h2>Our Medical Services</h2>
@@ -375,17 +375,17 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="single-gallery mb-30">
-                                <div class="gallery-img big-img" style="background-image: url(assets/img/gallery/gallery1.png);"></div>
+                                <div class="gallery-img big-img" style="background-image: url(static/assets/img/gallery/gallery1.png);"></div>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="single-gallery mb-30">
-                                <div class="gallery-img small-img" style="background-image: url(assets/img/gallery/gallery2.png);"></div>
+                                <div class="gallery-img small-img" style="background-image: url(static/assets/img/gallery/gallery2.png);"></div>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="single-gallery mb-30">
-                                <div class="gallery-img small-img" style="background-image: url(assets/img/gallery/gallery3.png);"></div>
+                                <div class="gallery-img small-img" style="background-image: url(static/assets/img/gallery/gallery3.png);"></div>
                             </div>
                         </div>
                     </div>
@@ -395,17 +395,17 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="single-gallery mb-30">
-                                <div class="gallery-img small-img" style="background-image: url(assets/img/gallery/gallery4.png);"></div>
+                                <div class="gallery-img small-img" style="background-image: url(static/assets/img/gallery/gallery4.png);"></div>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="single-gallery mb-30">
-                                <div class="gallery-img small-img" style="background-image: url(assets/img/gallery/gallery5.png);"></div>
+                                <div class="gallery-img small-img" style="background-image: url(static/assets/img/gallery/gallery5.png);"></div>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="single-gallery mb-30">
-                                <div class="gallery-img big-img" style="background-image: url(assets/img/gallery/gallery6.png);"></div>
+                                <div class="gallery-img big-img" style="background-image: url(static/assets/img/gallery/gallery6.png);"></div>
                             </div>
                         </div>
                     </div>
@@ -425,7 +425,7 @@
                     <!-- Testimonial Content -->
                     <div class="testimonial-caption ">
                         <div class="testimonial-top-cap">
-                            <img src="{% static 'assets/img/gallery/testimonial.png' %}" alt="">
+                            <!-- <img src="{% static 'assets/img/gallery/testimonial.png' %}" alt=""> -->
                             <p>“I am at an age where I just want to be fit and healthy our bodies are our responsibility! So start caring for your body and it will care for you. Eat clean it will care for yout hard.”</p>
                         </div>
                         <!-- founder -->
@@ -592,42 +592,42 @@
                 <div class="col-lg-3 col-md-3 col-sm-6">
                     <div class="gallery-box">
                         <div class="single-gallery">
-                            <div class="gallery-img " style="background-image: url(assets/img/gallery/gallery1.png);"></div>
+                            <div class="gallery-img " style="background-image: url(static/assets/img/gallery/gallery1.png);"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6">
                     <div class="gallery-box">
                         <div class="single-gallery">
-                            <div class="gallery-img " style="background-image: url(assets/img/gallery/gallery2.png);"></div>
+                            <div class="gallery-img " style="background-image: url(static/assets/img/gallery/gallery2.png);"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="gallery-box">
                         <div class="single-gallery">
-                            <div class="gallery-img " style="background-image: url(assets/img/gallery/gallery3.png);"></div>
+                            <div class="gallery-img " style="background-image: url(static/assets/img/gallery/gallery3.png);"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="gallery-box">
                         <div class="single-gallery">
-                            <div class="gallery-img " style="background-image: url(assets/img/gallery/gallery4.png);"></div>
+                            <div class="gallery-img " style="background-image: url(static/assets/img/gallery/gallery4.png);"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6">
                     <div class="gallery-box">
                         <div class="single-gallery">
-                             <div class="gallery-img " style="background-image: url(assets/img/gallery/gallery5.png);"></div>
+                             <div class="gallery-img " style="background-image: url(static/assets/img/gallery/gallery5.png);"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6">
                     <div class="gallery-box">
                         <div class="single-gallery">
-                            <div class="gallery-img " style="background-image: url(assets/img/gallery/gallery6.png);"></div>
+                            <div class="gallery-img " style="background-image: url(static/assets/img/gallery/gallery6.png);"></div>
                         </div>
                     </div>
                 </div>
@@ -700,7 +700,7 @@
     </main>
     <footer>
         <!--? Footer Start-->
-        <div class="footer-area section-bg" data-background="{% static 'assets/img/gallery/footer_bg.jpg' %}">
+        <div class="footer-area section-bg">
             <div class="container">
                 <div class="footer-top footer-padding">
                     <div class="row d-flex justify-content-between">
@@ -708,7 +708,7 @@
                             <div class="single-footer-caption mb-50">
                                 <!-- logo -->
                                 <div class="footer-logo">
-                                    <a href="index.html"><img src="{% static 'assets/img/logo/logo2_footer.png' %}" alt=""></a>
+                                    <a href="#"></a>
                                 </div>
                             </div>
                         </div>

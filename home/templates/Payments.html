@@ -40,7 +40,7 @@
             </a></li>
         </ul>
         <div class="offcanvas__logo">
-            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+            <!-- <a href="./index.html"><img src="img/logo.png" alt=""></a> -->
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__auth">
@@ -56,7 +56,7 @@
             <div class="row">
                 <div class="col-xl-3 col-lg-2">
                     <div class="header__logo">
-                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                        <!-- <a href="./index.html"><img src="img/logo.png" alt=""></a> -->
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-7">
@@ -109,11 +109,12 @@
 
     <div class="d-flex justify-content-center align-items-center">
        <div class="card p-5 m-5 bg-body">
-          <p>Click the button to Payment for order using razor pay</p><br>
+          <h3 class="text-center mb-3">RAZORPAY PAYMENT</h3>
           <h5 class="d-inline">order ID<span class="float-right mr-2">{{order.id}}</span></h5>
-          <h5 class="d-inline">Payment ID<span class="float-right mr-2">{{order.razor_orderid}}</span></h5>  
+          <h5>Payment ID</h5>
+          <h5 class="ml-5">{{order.razor_orderid}}</h5>  
           <h5 class="d-inline">Amount<span class="float-right mr-2">{{order.Total_Price}}</span></h5> 
-          <button class="btn btn-danger" id="rzp-button1">Pay</button>
+          <button class="btn btn-danger my-3" id="rzp-button1">Pay</button>
           <a href="{% url 'home:payment_cancel' order.id %}" class="btn btn-danger">Cancel</a>
        </div> 
    </div>
@@ -124,16 +125,16 @@
             <div class="col-lg-4 col-md-6 col-sm-7">
                 <div class="footer__about">
                     <div class="footer__logo">
-                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                        <!-- <a href="./index.html"><img src="img/logo.png" alt=""></a> -->
                     </div>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                     cilisis.</p>
                     <div class="footer__payment">
-                        <a href="#"><img src="img/payment/payment-1.png" alt=""></a>
-                        <a href="#"><img src="img/payment/payment-2.png" alt=""></a>
-                        <a href="#"><img src="img/payment/payment-3.png" alt=""></a>
-                        <a href="#"><img src="img/payment/payment-4.png" alt=""></a>
-                        <a href="#"><img src="img/payment/payment-5.png" alt=""></a>
+                        <!-- <a href="#"><img src="img/payment/payment-1.png" alt=""></a> -->
+                        <!-- <a href="#"><img src="img/payment/payment-2.png" alt=""></a> -->
+                        <!-- <a href="#"><img src="img/payment/payment-3.png" alt=""></a> -->
+                        <!-- <a href="#"><img src="img/payment/payment-4.png" alt=""></a> -->
+                        <!-- <a href="#"><img src="img/payment/payment-5.png" alt=""></a> -->
                     </div>
                 </div>
             </div>
